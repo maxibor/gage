@@ -1,0 +1,87 @@
+gagePrep <-
+function(exprs, ref = NULL, samp = NULL, 
+    same.dir = TRUE, compare = "paired", rank.test = FALSE, use.fold = TRUE, 
+    weights = NULL, full.table = FALSE, ...) {
+    if (class(exprs) == "data.frame") 
+        exprs <- as.matrix(exprs)
+    if (is.numeric(exprs)) {
+        exprs <- cbind(exprs)
+        nc <- ncol(exprs)
+    }
+    else stop("exprs needs to be a numeric matrix or vector")
+    if (!is.null(ref)) {
+        if (!is.numeric(ref)) 
+            stop("reference column index's required")
+    }
+    if (!is.null(ref)) {
+        if (options()$verbose) 
+            cat("Creating ratios...", "\n")
+        if (!is.null(samp)) {
+            if (!is.numeric(samp)) 
+                stop("sample column index's required")
+        }
+        else samp = (1:ncol(exprs))[-ref]
+        if (use.fold) {
+            if (compare == "as.group") {
+                exprs = cbind(apply(cbind(exprs[, samp]), 1, 
+                  mean) - apply(cbind(exprs[, ref]), 1, mean))
+            }
+            else if (compare == "paired") {
+                if (!is.null(weights) & !all(c(length(ref), length(samp)) == 
+                  length(weights))) 
+                  stop("please make sure 'weights' comparable and of equal length to 'ref' and 'samp'")
+                if (length(samp)%%length(ref) == 0 & length(intersect(samp, 
+                  ref)) == 0) {
+                  if (length(samp) > 1) 
+                    exprs = exprs[, samp] - exprs[, ref]
+                  else exprs = matrix(exprs[, samp] - exprs[, 
+                    ref], ncol = length(samp), dimnames = list(rownames(exprs), 
+                    colnames(exprs)[samp]))
+                }
+                else stop("please make sure 'ref' and 'samp' are comparable and of equal length")
+            }
+            else if (compare == "unpaired" & (length(ref) * length(samp) > 
+                1)) {
+                exprs <- exprs[, rep(samp, each = length(ref))] - 
+                  exprs[, rep(ref, length(samp))]
+            }
+            else {
+                ref_mean <- (if (length(ref) > 1) 
+                  apply(exprs[, ref], 1, mean, na.rm = TRUE)
+                else exprs[, ref])
+                exprs <- exprs[, samp] - ref_mean
+            }
+        }
+        else if (length(ref) > 1 & length(samp) > 1) {
+            exprs = cbind(apply(exprs, 1, function(x) t.test(x[samp], 
+                x[ref], alternative = "two.sided", paired = (compare == 
+                  "paired" & length(ref) == length(samp)))$statistic))
+        }
+        else stop("for t-test, please make sure 'ref' and 'samp' both have length >1")
+    }
+    else if (nc > 1) {
+        if (use.fold) {
+            if (compare == "as.group") {
+                exprs = cbind(apply(exprs, 1, mean))
+            }
+            else if (compare == "paired") {
+                if (!is.null(weights) & nc != length(weights)) 
+                  stop("please make sure 'weights' comparable and equal to exprs column number")
+            }
+            else stop("improper 'compare' argument  value")
+        }
+        else {
+            exprs = cbind(apply(exprs, 1, function(x) t.test(x, 
+                alternative = "two.sided", paired = F)$statistic))
+            print("one sample t-test per gene")
+        }
+    }
+    
+    exprs = cbind(exprs)
+    if (!same.dir) 
+        exprs = abs(exprs)
+    if (rank.test) 
+        exprs = apply(exprs, 2, rank)
+    return(exprs)
+}
+

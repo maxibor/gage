@@ -1,0 +1,21 @@
+import(
+       multtest,
+       graph
+)
+
+export(
+eg2sym, sym2eg,
+essGene,
+esset.grp,
+gage, gagePrep, gageSum,
+gageComp,
+gagePipe,
+geneData,
+gs.tTest, gs.zTest, gs.KSTest,
+heter.gage, pairData,
+readExpData,
+readList,
+sigGeneSet
+)
+
+#exportPattern("^[[:alpha:]]+")
