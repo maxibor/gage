@@ -56,7 +56,7 @@ print(hn)
 print(dcis)
 
 data(kegg.gs)
-lapply(kegg.gs[1:6],head)
+lapply(kegg.gs[1:3],head)
 head(rownames(gse16873))
 gse16873.kegg.p <- gage(gse16873, gsets = kegg.gs,
     ref = hn, samp = dcis)

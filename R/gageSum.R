@@ -22,14 +22,6 @@ function(p.results, ref = NULL, mstat = NULL,
     
     Fdr = NULL
     
-    if (require(fdrtool)) {
-        q.fdrtool = p.erlang
-        q.fdrtool[!is.na(p.erlang)] = fdrtool(p.erlang[!is.na(p.erlang)], 
-            statistic = "pvalue", plot = FALSE, verbose = options()$verbose)$qval
-        Fdr = cbind(Fdr, q.fdrtool)
-    }
-    else print("package fdrtool not available")
-    
     if (require(multtest)) {
         q.BH = p.erlang
         res <- mt.rawp2adjp(p.erlang[!is.na(p.erlang)], "BH")

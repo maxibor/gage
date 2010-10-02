@@ -60,7 +60,7 @@ head(rownames(gse16873.sym))
 #convert kegg.gs correspondingly
 data(kegg.gs)
 kegg.gs.sym<-lapply(kegg.gs, eg2sym)
-lapply(kegg.gs.sym[1:6],head)
+lapply(kegg.gs.sym[1:3],head)
 #GAGE analysis with the converted data
 cn=colnames(gse16873)
 hn=grep('HN',cn, ignore.case =TRUE)

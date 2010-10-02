@@ -127,7 +127,7 @@ gse16873.kegg.heter.p <- heter.gage(gse16873, gsets = kegg.gs,
 gse16873.kegg.heter.2d.p <- heter.gage(gse16873, gsets = kegg.gs,
     ref.list = refList, samp.list = sampList, same.dir = FALSE)
 str(gse16873.kegg.heter.p)
-head(gse16873.kegg.heter.p$greater[, 1:6])
+head(gse16873.kegg.heter.p$greater[, 1:5])
 }
 
 \keyword{htest}

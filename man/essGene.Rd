@@ -117,14 +117,14 @@ dcis=grep('DCIS',cn, ignore.case =TRUE)
 data(kegg.gs)
 gse16873.kegg.p <- gage(gse16873, gsets = kegg.gs, 
     ref = hn, samp = dcis)
-rownames(gse16873.kegg.p$greater)[1:6]
-gs=unique(unlist(kegg.gs[rownames(gse16873.kegg.p$greater)[1:6]]))
+rownames(gse16873.kegg.p$greater)[1:3]
+gs=unique(unlist(kegg.gs[rownames(gse16873.kegg.p$greater)[1:3]]))
 essData=essGene(gs, gse16873, ref =hn, samp =dcis)
 head(essData)
 ref1=1:6
 samp1=7:12
 #generated text file for data table, pdf files for heatmap and scatterplot
-for (gs in rownames(gse16873.kegg.p$greater)[1:6]) {
+for (gs in rownames(gse16873.kegg.p$greater)[1:3]) {
     outname = gsub(" |:|/", "_", substr(gs, 10, 100))
     geneData(genes = kegg.gs[[gs]], exprs = essData, ref = ref1,
         samp = samp1, outname = outname, txt = TRUE, heatmap = TRUE,

@@ -66,8 +66,8 @@ data(go.gs)
 
 #make sure the gene IDs are the same for expression data and gene set
 #data
-lapply(kegg.gs[1:6],head)
-lapply(go.gs[1:6],head)
+lapply(kegg.gs[1:3],head)
+lapply(go.gs[1:3],head)
 head(rownames(gse16873))
 
 #GAGE analysis

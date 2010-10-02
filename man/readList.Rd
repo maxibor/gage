@@ -42,12 +42,12 @@ gene set.
 #an example GMT gene set data derived from MSigDB data
 filename=system.file("data/c2.demo.gmt", package = "gage")
 demo.gs=readList(filename)
-demo.gs[1:6]
+demo.gs[1:3]
 #to use these gene sets with gse16873, need to convert the gene symbols
 #to Entrez IDs first
 data(egSymb)
 demo.gs.sym<-lapply(demo.gs, sym2eg)
-demo.gs.sym[1:6]
+demo.gs.sym[1:3]
 }
 
 \keyword{manip}

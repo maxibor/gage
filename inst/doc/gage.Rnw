@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{Generally Applicable Gene-set/Pathway Analysis}
-%\VignetteDepends{multtest, fdrtool, graph, gageData}
+%\VignetteDepends{multtest, graph, gageData}
 %\VignetteSuggests{Rgraphviz, RBGL}
 %\VignettePackage{gage}
 
@@ -57,7 +57,7 @@ source("http://bioconductor.org/biocLite.R")
 biocLite(c("gage","gageData"))
 @ 
 
-Or install without using Bioconductor, but require packages \Rpackage{graph}, \Rpackage{multtest} and \Rpackage{fdrtool} to be installed too:
+Or install without using Bioconductor, but require packages \Rpackage{graph} and \Rpackage{multtest} to be installed too:
 Download \Rpackage{gage} and \Rpackage{gageData} packages (with proper version number and zip format) and save to \verb@/your/local/directory/@.
 <<install, echo=TRUE, eval=FALSE>>=
 install.packages(c("/your/local/directory/gage_1.4.0.tar.gz",
@@ -125,8 +125,8 @@ gse16873.kegg.p <- gage(gse16873, gsets = kegg.gs,
 gse16873.go.p <- gage(gse16873, gsets = go.gs, 
     ref = hn, samp = dcis)
 str(gse16873.kegg.p, strict.width='wrap')
-head(gse16873.kegg.p$greater[, 1:6], 4)
-head(gse16873.kegg.p$less[, 1:6], 4)
+head(gse16873.kegg.p$greater[, 1:5], 4)
+head(gse16873.kegg.p$less[, 1:5], 4)
 @ 
 
 As described in GAGE paper \citep{luo:etal:2009}, it is worthy to run \Rfunction{gage} with \verb@same.dir=F@ option on KEGG pathways too to capture pathways perturbed towards both directions simultaneously. Note we normally do not use \verb@same.dir=F@ option on GO groups, which are mostly gene sets coregulated towards the same direction.
@@ -134,7 +134,7 @@ As described in GAGE paper \citep{luo:etal:2009}, it is worthy to run \Rfunction
 <<gage.2direction, echo=TRUE>>=
 gse16873.kegg.2d.p <- gage(gse16873, gsets = kegg.gs, 
     ref = hn, samp = dcis, same.dir = F)
-head(gse16873.kegg.2d.p[,1:6], 4)
+head(gse16873.kegg.2d.p[,1:5], 4)
 @ 
 
  
@@ -142,7 +142,7 @@ We may also do PAGE analysis \citep{kim:etal:2005} with or without different com
 <<page, echo=TRUE>>=
 gse16873.kegg.page.p <- gage(gse16873, gsets = kegg.gs, 
     ref = hn, samp = dcis, saaTest = gs.zTest)
-head(gse16873.kegg.page.p$greater[, 1:6], 4)
+head(gse16873.kegg.page.p$greater[, 1:5], 4)
 @ 
 
 We get much smaller p-/q-values with PAGE than with GAGE. As described in GAGE paper \citep{luo:etal:2009}, most significant calls made by PAGE are likely false positives.

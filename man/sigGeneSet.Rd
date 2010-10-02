@@ -41,8 +41,7 @@ sigGeneSet(setp, cutoff = 0.1, dualSig = (0:2)[2], qpval = c("q.BH",
     selection. Default to 
     be "q.BH" (q-value using BH procedure). "P.erlang" is the unadjusted
     global p-value and may be used as selection criterion
-    sometimes. Another type of q-value, "q.fdrtool", may also be used,
-    but not recommended.
+    sometimes. 
 }
 }
 \details{

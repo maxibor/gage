@@ -191,8 +191,6 @@ FALSE, ...)
   \item{P.erlang }{gloal p-value or summary of the individual p-values from
     multiple single array based gene set tests. This is the default
     p-value being used.}
-  \item{q.fdrtool }{FDR q-value adjustment of the global p-value using
-    fdrtool package}
   \item{q.BH }{FDR q-value adjustment of the global p-value using
     the Benjamini & Hochberg procedure implemented in multtest
     package. This is the default q-value being used.}
@@ -244,12 +242,12 @@ gse16873.kegg.p <- gage(gse16873, gsets = kegg.gs,
 gse16873.go.p <- gage(gse16873, gsets = go.gs, 
     ref = hn, samp = dcis)
 str(gse16873.kegg.p)
-head(gse16873.kegg.p$greater[, 1:6])
-head(gse16873.kegg.p$less[, 1:6])
+head(gse16873.kegg.p$greater[, 1:5])
+head(gse16873.kegg.p$less[, 1:5])
 #kegg test for 2-directional changes
 gse16873.kegg.2d.p <- gage(gse16873, gsets = kegg.gs, 
     ref = hn, samp = dcis, same.dir = FALSE)
-head(gse16873.kegg.2d.p[, 1:6])
+head(gse16873.kegg.2d.p[, 1:5])
 
 ###alternative ways to do GAGE analysis###
 #with unpaired samples
