@@ -58,9 +58,9 @@ biocLite(c("gage","gageData"))
 @ 
 
 Or install without using Bioconductor, but require packages \Rpackage{graph} and \Rpackage{multtest} to be installed too:
-Download \Rpackage{gage} and \Rpackage{gageData} packages (with proper version number and zip format) and save to \verb@/your/local/directory/@.
+Download \Rpackage{gage} and \Rpackage{gageData} packages (make sure with proper version number and zip format) and save to \verb@/your/local/directory/@.
 <<install, echo=TRUE, eval=FALSE>>=
-install.packages(c("/your/local/directory/gage_1.4.0.tar.gz",
+install.packages(c("/your/local/directory/gage_2.0.0.tar.gz",
     "/your/local/directory/gageData_1.0.0.tar.gz"), 
     repos = NULL, type = "source")
 @ 
