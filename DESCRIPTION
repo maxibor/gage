@@ -5,7 +5,7 @@ Version: 1.99.1
 Date: 2010-10-04
 Author: Weijun Luo
 Maintainer: Weijun Luo <luo@cshl.edu>
-Description: In gage package, we provide a series of functions for basic GAGE analysis, result process- ing and presentation. We have also built pipeline routines for of multiple GAGE analysis on dierent comparisons or samples, the comparison of parallel analysis results, and even the combined analysis of heterogeneous data from dierent sources/studies. In addition, we also provide demo microarray data and commonly used gene set data based on KEGG pathways and GO terms. 
+Description: GAGE is a published method for gene set or pathway analysis. In gage package, we provide a series of functions for basic GAGE analysis, result processing and presentation. We have also built pipeline routines for of multiple GAGE analysis on different comparisons or samples, the comparison of parallel analysis results, and even the combined analysis of heterogeneous data from different sources/studies. In addition, we also provide demo microarray data and commonly used gene set data based on KEGG pathways and GO terms. These funtions and data are also useful for gene set analysis using other methods.
 biocViews: Pathways, GO, DifferentialExpression,  Microarray, OneChannel, TwoChannel, RNAseq,  DataRepresentation, Genetics, Bioinformatics, MultipleComparisons
 Depends: graph, multtest
 Suggests: gageData, GO.db, GSEABase, KEGG.db, org.Hs.eg.db
