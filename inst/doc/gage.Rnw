@@ -29,7 +29,7 @@
 \maketitle
 
 \begin{abstract}
-  In this vignette, we demonstrate the \Rpackage{gage} package for gene set or pathway analysis. The \Rpackage{gage} package implement GAGE method and is generally applicable independent of microarray data attributes including sample sizes, experimental designs and other types of heterogeneity. We introduce functions and data for routine and advanced gene set analysis, as well as results presentation and interpretation. We also cover package installation, data preparation and common application errors.
+  In this vignette, we demonstrate the \Rpackage{gage} package for gene set or pathway analysis. The \Rpackage{gage} package implement the GAGE method. GAGE is generally applicable independent of microarray data attributes including sample sizes, experimental designs, microarray platforms, and other types of heterogeneity, and consistently achieves superior performance over other frequently used methods. We introduce functions and data for routine and advanced gene set analysis, as well as results presentation and interpretation. We also cover package installation, data preparation and common application errors.
 \end{abstract}
 
 \section{Introduction}

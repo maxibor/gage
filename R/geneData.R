@@ -13,6 +13,10 @@ function(genes, exprs, ref = NULL, samp = NULL,
     
     genes = cbind(genes)
     sel = rownames(exprs) %in% genes[, 1]
+    if(sum(sel)<2){
+      print("The number of genes found in exprs is 0 or 1, no need to proceed")
+      return(invisible(1))
+      }
     gData = exprs[sel, ]
     if (ncol(genes) > 1) 
         rownames(gData) = genes[match(rownames(gData), genes[, 
