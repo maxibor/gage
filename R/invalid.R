@@ -1,5 +1,4 @@
-invalid <-
-function(x) {
+invalid <- function(x) {
     if (missing(x) || is.null(x) || length(x) == 0) 
         return(TRUE)
     if (is.list(x)) 
@@ -8,4 +7,4 @@ function(x) {
         return(all(is.na(x)))
     else return(FALSE)
 }
-
+ 

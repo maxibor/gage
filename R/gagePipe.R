@@ -1,8 +1,8 @@
-gagePipe <-
-function(arraydata, dataname = "arraydata", 
+gagePipe <- function(arraydata, dataname = "arraydata", 
     trim.at = TRUE, sampnames, gsdata = NULL, gsname = c("kegg.gs", 
         "go.gs"), ref.list, samp.list, weight.list = NULL, comp.list = "paired", 
-    q.cutoff = 0.1, ...) {
+    q.cutoff = 0.1, heatmap = TRUE, pdf.size = c(7, 7), p.limit = c(0.5, 
+        5.5), stat.limit = 5, ...) {
     
     if (length(arraydata) == 1 & is.character(arraydata)) {
         dataname = gsub("[.]R[dD]ata", "", basename(arraydata))
@@ -67,17 +67,17 @@ function(arraydata, dataname = "arraydata",
                 compare = comp, same.dir = T, ...))
             gage.p = eval(as.name(paste(sampnames[i], paste(gs, 
                 ".p", sep = ""), sep = ".")))
-            rn1 = rownames(gage.p[[1]])[gage.p[[1]][, "q.BH"] < 
-                q.cutoff & !is.na(gage.p[[1]][, "q.BH"])]
+            rn1 = rownames(gage.p$greater)[gage.p$greater[, "q.val"] < 
+                q.cutoff & !is.na(gage.p$greater[, "q.val"])]
             if (length(rn1) > 0) {
-                gage.p.sel1 = rbind(gage.p[[1]][rn1, ])
+                gage.p.sel1 = rbind(gage.p$greater[rn1, ])
                 rownames(gage.p.sel1) = rn1
             }
             else gage.p.sel1 = NULL
-            rn2 = rownames(gage.p[[2]])[gage.p[[2]][, "q.BH"] < 
-                q.cutoff & !is.na(gage.p[[2]][, "q.BH"])]
+            rn2 = rownames(gage.p$less)[gage.p$less[, "q.val"] < 
+                q.cutoff & !is.na(gage.p$less[, "q.val"])]
             if (length(rn2) > 0) {
-                gage.p.sel2 = rbind(gage.p[[2]][rn2, ])
+                gage.p.sel2 = rbind(gage.p$less[rn2, ])
                 rownames(gage.p.sel2) = rn2
             }
             else gage.p.sel2 = NULL
@@ -91,6 +91,32 @@ function(arraydata, dataname = "arraydata",
                   collapse = "\t"), "\n", file = filename, sep = "")
                 write.table(outdata, file = filename, sep = "\t", 
                   col.names = F, append = T)
+                if (heatmap & nrow(outdata) > 1) {
+                  pdfname = paste(dataname, paste(sampnames[i], 
+                    gs, sep = "."), "heatmap.pdf", sep = ".")
+                  pdf(pdfname, width = pdf.size[1], height = pdf.size[2])
+                  if (length(rn1) > 1) {
+                    gs.heatmap(-log10(gage.p.sel1[, -c(1:5)]), 
+                      limit = p.limit, main = "UP test: -log10(p-value)", 
+                      ...)
+                  }
+                  else print(paste("No heatmap produced for up-regulated", 
+                    gs, "gene sets, only 1 or none signficant."))
+                  if (length(rn2) > 1) {
+                    gs.heatmap(-log10(gage.p.sel2[, -c(1:5)]), 
+                      limit = p.limit, main = "Down test: -log10(p-value)", 
+                      ...)
+                  }
+                  else print(paste("No heatmap produced for down-regulated", 
+                    gs, "gene sets, only 1 or none signficant."))
+                  gs.heatmap(gage.p$stats[c(rn1, rn2), -1], limit = stat.limit, 
+                    main = "Test statistics", ...)
+                  dev.off()
+                }
+                else if (heatmap) 
+                  print(paste("No heatmap produced for up- or down-regulated", 
+                    gs, "gene sets, only 1 or none signficant."))
+                
             }
             else print(paste("No", gs, "gene sets are signficant in one-direction!"))
             
@@ -100,10 +126,10 @@ function(arraydata, dataname = "arraydata",
                 compare = comp, same.dir = F, ...))
             gage.p = eval(as.name(paste(sampnames[i], paste(gs, 
                 ".2d.p", sep = ""), sep = ".")))
-            rn1 = rownames(gage.p)[gage.p[, "q.BH"] < q.cutoff & 
-                !is.na(gage.p[, "q.BH"])]
+            rn1 = rownames(gage.p$greater)[gage.p$greater[, "q.val"] < 
+                q.cutoff & !is.na(gage.p$greater[, "q.val"])]
             if (length(rn1) > 0) {
-                gage.p.sel1 = rbind(gage.p[rn1, ])
+                gage.p.sel1 = rbind(gage.p$greater[rn1, ])
                 rownames(gage.p.sel1) = rn1
                 filename = paste(dataname, paste(sampnames[i], 
                   paste(gs, ".2d.p", sep = ""), sep = "."), "txt", 
@@ -113,6 +139,22 @@ function(arraydata, dataname = "arraydata",
                   collapse = "\t"), "\n", file = filename, sep = "")
                 write.table(gage.p.sel1, file = filename, sep = "\t", 
                   col.names = F, append = T)
+                
+                if (heatmap & length(rn1) > 1) {
+                  pdfname = paste(dataname, paste(sampnames[i], 
+                    gs, sep = "."), "2d.heatmap.pdf", sep = ".")
+                  pdf(pdfname, width = pdf.size[1], height = pdf.size[2])
+                  gs.heatmap(-log10(gage.p.sel1[, -c(1:5)]), 
+                    limit = p.limit, main = "Two-way test: -log10(p-value)", 
+                    ...)
+                  gs.heatmap(gage.p$stats[rn1, -1], limit = stat.limit, 
+                    main = "Test statistics", ...)
+                  dev.off()
+                }
+                else if (heatmap) 
+                  print(paste("No heatmap produced for two-way perturbed", 
+                    gs, "gene sets, only 1 signficant."))
+                
             }
             else print(paste("No", gs, "gene sets are signficant in two-direction!"))
             
@@ -125,4 +167,4 @@ function(arraydata, dataname = "arraydata",
         ".gage.RData", sep = ""))
     return(invisible(1))
 }
-
+ 

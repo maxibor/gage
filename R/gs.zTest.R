@@ -1,5 +1,4 @@
-gs.zTest <-
-function(exprs, gsets, set.size = c(10, 
+gs.zTest <- function(exprs, gsets, set.size = c(10, 
     500), same.dir = TRUE, ...) {
     if (class(gsets) != "list") 
         stop("gsets need to be a list")
@@ -43,7 +42,7 @@ function(exprs, gsets, set.size = c(10,
         
         texprs <- matrix(exprs[ix, ], ncol = ncol(exprs))
         
-        mod <- (length(ix)^(1/2))/s
+        mod <- (length(ix)/s)^(1/2)
         m <- apply(texprs, 2, mean, na.rm = TRUE) - mu
         stat <- m * mod
         results[i, ] <- as.numeric(stat)
@@ -57,4 +56,4 @@ function(exprs, gsets, set.size = c(10,
         mstat = mstat, setsizes = setsize)
     return(rawRes)
 }
-
+ 

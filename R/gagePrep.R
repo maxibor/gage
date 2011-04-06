@@ -1,5 +1,4 @@
-gagePrep <-
-function(exprs, ref = NULL, samp = NULL, 
+gagePrep <- function(exprs, ref = NULL, samp = NULL, 
     same.dir = TRUE, compare = "paired", rank.test = FALSE, use.fold = TRUE, 
     weights = NULL, full.table = FALSE, ...) {
     if (class(exprs) == "data.frame") 
@@ -84,4 +83,4 @@ function(exprs, ref = NULL, samp = NULL,
         exprs = apply(exprs, 2, rank)
     return(exprs)
 }
-
+ 

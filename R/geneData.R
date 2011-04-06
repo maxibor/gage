@@ -1,5 +1,4 @@
-geneData <-
-function(genes, exprs, ref = NULL, samp = NULL, 
+geneData <- function(genes, exprs, ref = NULL, samp = NULL, 
     outname = "array", txt = TRUE, heatmap = FALSE, scatterplot = FALSE, 
     samp.mean = FALSE, pdf.size = c(7, 7), cols = NULL, scale = "row", 
     limit = NULL, label.groups = TRUE, ...) {
@@ -13,10 +12,10 @@ function(genes, exprs, ref = NULL, samp = NULL,
     
     genes = cbind(genes)
     sel = rownames(exprs) %in% genes[, 1]
-    if(sum(sel)<2){
-      print("The number of genes found in exprs is 0 or 1, no need to proceed")
-      return(invisible(1))
-      }
+    if (sum(sel) < 2) {
+        print("The number of genes found in exprs is 0 or 1, no need to proceed")
+        return(invisible(1))
+    }
     gData = exprs[sel, ]
     if (ncol(genes) > 1) 
         rownames(gData) = genes[match(rownames(gData), genes[, 
@@ -56,13 +55,12 @@ function(genes, exprs, ref = NULL, samp = NULL,
             col.cols = colorpanel(2, low = "black", high = "yellow")
             col.cols = rep(col.cols, c(length(ref), length(samp)))
             heatmap2(gData.h, col = cols, scale = "none", symkey = FALSE, 
-                density.info = "none", trace = "none",
-                ColSideColors = col.cols, ...)
+                density.info = "none", trace = "none", ColSideColors = col.cols, 
+                ...)
         }
         else {
             heatmap2(gData.h, col = cols, scale = "none", symkey = FALSE, 
-                density.info = "none", trace = "none",
-                ...)
+                density.info = "none", trace = "none", ...)
         }
         dev.off()
     }
@@ -108,4 +106,4 @@ function(genes, exprs, ref = NULL, samp = NULL,
     
     return(invisible(1))
 }
-
+ 

@@ -31,7 +31,7 @@ gene set.
   Bioinformatics 2009, 10:161
 }
 \author{
-  Weijun Luo <luo@cshl.edu>
+  Weijun Luo <luo_weijun@yahoo.com>
 }
 
 \seealso{
@@ -40,7 +40,7 @@ gene set.
 
 \examples{
 #an example GMT gene set data derived from MSigDB data
-filename=system.file("data/c2.demo.gmt", package = "gage")
+filename=system.file("extdata/c2.demo.gmt", package = "gage")
 demo.gs=readList(filename)
 demo.gs[1:3]
 #to use these gene sets with gse16873, need to convert the gene symbols

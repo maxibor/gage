@@ -1,5 +1,4 @@
-deComp <-
-function(..., sampnames, outname = NULL, 
+deComp <- function(..., sampnames, outname = NULL, 
     org = NULL, q.cutoff = 0.1, common = FALSE, return.all = FALSE) {
     input = list(...)
     dims = lapply(input, dim)
@@ -78,4 +77,4 @@ function(..., sampnames, outname = NULL,
         return(list(comb = comb, vc = vc))
     }
 }
-
+ 

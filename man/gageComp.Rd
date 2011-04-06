@@ -13,7 +13,7 @@ Compare multiple GAGE analyses results
 }
 \usage{
 gageComp(sampnames, dataname, gsname = c("kegg.gs", "go.gs"), use.cols =
-c("stat.mean", "q.BH"), q.cutoff = 0.1, do.plot = TRUE)
+c("stat.mean", "q.val"), q.cutoff = 0.1, do.plot = TRUE)
 }
 
 \arguments{
@@ -38,7 +38,7 @@ c("stat.mean", "q.BH"), q.cutoff = 0.1, do.plot = TRUE)
   \item{use.cols}{
     character, what columns in the \code{gage} analysis result objects will be used in the
     comparison. Default to be "stat.mean" (mean of gene set test
-    statistics) and "q.BH" (q-value using BH procedure). Check help
+    statistics) and "q.val" (q-value using BH procedure). Check help
     information for \code{gage} function for more details on the result columns.
   }
     \item{q.cutoff}{
@@ -80,7 +80,7 @@ c("stat.mean", "q.BH"), q.cutoff = 0.1, do.plot = TRUE)
   Bioinformatics 2009, 10:161
 }
 \author{
-  Weijun Luo <luo@cshl.edu>
+  Weijun Luo <luo_weijun@yahoo.com>
 }
 
 

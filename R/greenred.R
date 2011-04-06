@@ -1,4 +1,3 @@
-greenred <-
-function(n) colorpanel(n, "green", "black", 
+greenred <- function(n) colorpanel(n, "green", "black", 
     "red")
-
+ 

@@ -1,5 +1,4 @@
-esset.grp <-
-function(setp, exprs, gsets, ref = NULL, 
+esset.grp <- function(setp, exprs, gsets, ref = NULL, 
     samp = NULL, test4up = TRUE, same.dir = TRUE, compare = "paired", 
     use.fold = TRUE, cutoff = 0.01, use.q = FALSE, pc = 10^-10, 
     output = TRUE, outname = "esset.grp", make.plot = FALSE, 
@@ -11,10 +10,10 @@ function(setp, exprs, gsets, ref = NULL,
         compare = compare, use.fold = use.fold)
     
     if (use.q) {
-        ssp = setp[!is.na(setp[, "q.BH"]) & setp[, "q.BH"] < 
+        ssp = setp[!is.na(setp[, "q.val"]) & setp[, "q.val"] < 
             cutoff, ]
     }
-    else ssp = setp[!is.na(setp[, "P.erlang"]) & setp[, "P.erlang"] < 
+    else ssp = setp[!is.na(setp[, "p.val"]) & setp[, "p.val"] < 
         cutoff, ]
     if (length(ssp) < 2) 
         stop("There are less than 1 significant gene set, try to increase the cutoff (P-value)")
@@ -109,11 +108,11 @@ function(setp, exprs, gsets, ref = NULL,
                   sep = "")
             else ccs = NULL
             gn[sel] = paste(gn[sel], " (", round(-log10(goes[ll[sel], 
-                "P.erlang"]), 1), "; ", goes[ll[sel], "set.size"], 
+                "p.val"]), 1), "; ", goes[ll[sel], "set.size"], 
                 ccs, ")", sep = "")
             ps = rep(NA, nn)
             names(ps) = nodes(gg)
-            ps[sel] = -log10(goes[ll[sel], "P.erlang"])
+            ps[sel] = -log10(goes[ll[sel], "p.val"])
             if (!is.null(bins)) 
                 ps[ps > (bins * bsize)] = bins * bsize
         }
@@ -163,4 +162,4 @@ function(setp, exprs, gsets, ref = NULL,
         connectedComponent = sim.Graph.cc, overlapCounts = olmat, 
         overlapPvals = pmat, coreGeneSets = core))
 }
-
+ 

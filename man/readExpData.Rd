@@ -36,7 +36,7 @@ check help information of \code{read.delim} for more details.
   Bioinformatics 2009, 10:161
 }
 \author{
-  Weijun Luo <luo@cshl.edu>
+  Weijun Luo <luo_weijun@yahoo.com>
 }
 
 \seealso{
@@ -44,7 +44,7 @@ check help information of \code{read.delim} for more details.
 }
 
 \examples{
-filename=system.file("data/gse16873.demo", package = "gage")
+filename=system.file("extdata/gse16873.demo", package = "gage")
 demo.data=readExpData(filename, row.names=1)
 head(demo.data)
 }

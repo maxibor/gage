@@ -1,5 +1,4 @@
-colorpanel <-
-function(n, low, mid, high) {
+colorpanel <- function(n, low, mid, high) {
     if (missing(mid) || missing(high)) {
         low <- col2rgb(low)
         if (missing(high)) 
@@ -33,4 +32,4 @@ function(n, low, mid, high) {
     }
     rgb(red, blue, green)
 }
-
+ 

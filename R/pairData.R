@@ -1,5 +1,4 @@
-pairData <-
-function(exprs, ref.list, samp.list, comp.list = "paired", 
+pairData <- function(exprs, ref.list, samp.list, comp.list = "paired", 
     use.fold = TRUE, ...) {
     if (!is.list(ref.list) | !is.list(samp.list)) 
         stop("ref.list and samp.list both need to be lists")
@@ -48,4 +47,4 @@ function(exprs, ref.list, samp.list, comp.list = "paired",
     }
     return(list(exprs = expData, weights = weights))
 }
-
+ 

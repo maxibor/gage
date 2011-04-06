@@ -38,7 +38,7 @@ IDs.
   Bioinformatics 2009, 10:161
 }
 \author{
-  Weijun Luo <luo@cshl.edu>
+  Weijun Luo <luo_weijun@yahoo.com>
 }
 
 \seealso{

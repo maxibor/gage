@@ -1,4 +1,3 @@
-eg2sym <-
-function(eg) return(egSymb[match(eg, egSymb[, 
+eg2sym <- function(eg) return(egSymb[match(eg, egSymb[, 
     1]), 2])
-
+ 

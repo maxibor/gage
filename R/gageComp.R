@@ -1,6 +1,5 @@
-gageComp <-
-function(sampnames, dataname, gsname = c("kegg.gs", 
-    "go.gs"), use.cols = c("stat.mean", "q.BH"), q.cutoff = 0.1, 
+gageComp <- function(sampnames, dataname, gsname = c("kegg.gs", 
+    "go.gs"), use.cols = c("stat.mean", "q.val"), q.cutoff = 0.1, 
     do.plot = TRUE) {
     
     try(load(paste(dataname, ".gage.RData", sep = "")), silent = T)
@@ -11,21 +10,21 @@ function(sampnames, dataname, gsname = c("kegg.gs",
         
         outname = paste(dataname, gs, sep = ".")
         dc = parse(text = paste("deComp(", paste(sampnames, paste(".", 
-            gs, ".2d.p", sep = ""), use.cols, sep = "", collapse = ", "), 
-            ", sampnames=sampnames, outname=outname, q.cutoff=q.cutoff", 
+            gs, ".2d.p", sep = ""), "$greater", use.cols, sep = "", 
+            collapse = ", "), ", sampnames=sampnames, outname=outname, q.cutoff=q.cutoff", 
             ")", sep = ""))
         assign(paste(gs, ".comp", sep = ""), eval(dc))
         
         outname = paste(dataname, gs, "up", sep = ".")
         dc = parse(text = paste("deComp(", paste(sampnames, paste(".", 
-            gs, ".p", sep = ""), "[[1]]", use.cols, sep = "", 
+            gs, ".p", sep = ""), "$greater", use.cols, sep = "", 
             collapse = ", "), ", sampnames=sampnames, outname=outname, q.cutoff=q.cutoff", 
             ")", sep = ""))
         assign(paste(gs, ".up.comp", sep = ""), eval(dc))
         
         outname = paste(dataname, gs, "dn", sep = ".")
         dc = parse(text = paste("deComp(", paste(sampnames, paste(".", 
-            gs, ".p", sep = ""), "[[2]]", use.cols, sep = "", 
+            gs, ".p", sep = ""), "$less", use.cols, sep = "", 
             collapse = ", "), ", sampnames=sampnames, outname=outname, q.cutoff=q.cutoff", 
             ")", sep = ""))
         assign(paste(gs, ".dn.comp", sep = ""), eval(dc))
@@ -47,4 +46,4 @@ function(sampnames, dataname, gsname = c("kegg.gs",
     
     return(invisible(1))
 }
-
+ 

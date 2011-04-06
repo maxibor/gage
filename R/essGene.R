@@ -1,5 +1,4 @@
-essGene <-
-function(gs, exprs, ref = NULL, samp = NULL, 
+essGene <- function(gs, exprs, ref = NULL, samp = NULL, 
     gsets = NULL, compare = "paired", use.fold = TRUE, rank.abs = FALSE, 
     use.chi = FALSE, chi.p = 0.05, ...) {
     if (is.null(gsets)) 
@@ -32,4 +31,4 @@ function(gs, exprs, ref = NULL, samp = NULL,
     }
     else return(expdata[rownames(b)[sel], ])
 }
-
+ 

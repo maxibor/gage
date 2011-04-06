@@ -116,7 +116,7 @@ head(rownames(gse16873))
 
 We normally do GAGE analysis using gene sets derived from on KEGG pathways or GO term groups. Here we use the human gene set data coming with this package with the human microarray dataset GSE16873. Note that the \verb@go.gs@ derived from human GO database only includes 1000 gene sets due to size limit. For full \verb@go.gs@ or gene sets data for other species, we may always use the \Rpackage{gageData} package or compile our own gene set data. 
 
-Here we look at the expression changes towards one direction (either up- or down- regulation) in the gene sets. The results of such 1-directional analysis is a list of two matrices, corresponding to the two directions. Each result matrix contains multiple columns of test statistics and p-/q-values for all tested gene sets. Among them, P.erlang is the global p-value and q.BH is the corresponding FDR q-value. Gene sets are ranked by significance. Type \verb@?gage@ for more information.
+Here we look at the expression changes towards one direction (either up- or down- regulation) in the gene sets. The results of such 1-directional analysis is a list of two matrices, corresponding to the two directions. Each result matrix contains multiple columns of test statistics and p-/q-values for all tested gene sets. Among them, p.val is the global p-value and q.val is the corresponding FDR q-value. Gene sets are ranked by significance. Type \verb@?gage@ for more information.
 
 <<gage.1direction, echo=TRUE>>=
 gse16873.kegg.p <- gage(gse16873, gsets = kegg.gs, 
@@ -127,6 +127,7 @@ gse16873.go.p <- gage(gse16873, gsets = go.gs,
 str(gse16873.kegg.p, strict.width='wrap')
 head(gse16873.kegg.p$greater[, 1:5], 4)
 head(gse16873.kegg.p$less[, 1:5], 4)
+head(gse16873.kegg.p$stats[, 1:5], 4)
 @ 
 
 As described in GAGE paper \citep{luo:etal:2009}, it is worthy to run \Rfunction{gage} with \verb@same.dir=F@ option on KEGG pathways too to capture pathways perturbed towards both directions simultaneously. Note we normally do not use \verb@same.dir=F@ option on GO groups, which are mostly gene sets coregulated towards the same direction.
@@ -134,18 +135,19 @@ As described in GAGE paper \citep{luo:etal:2009}, it is worthy to run \Rfunction
 <<gage.2direction, echo=TRUE>>=
 gse16873.kegg.2d.p <- gage(gse16873, gsets = kegg.gs, 
     ref = hn, samp = dcis, same.dir = F)
-head(gse16873.kegg.2d.p[,1:5], 4)
+head(gse16873.kegg.2d.p$greater[,1:5], 4)
+head(gse16873.kegg.2d.p$stats[,1:5], 4)
 @ 
 
  
-We may also do PAGE analysis \citep{kim:etal:2005} with or without different combinations of GAGE style options. The key difference is 1) to use z-test instead of two-sample t-test and 2) a group-on-group comparison scheme (by setting arguement \verb@compare=""as.group"@) instead of default one-on-one scheme (\verb@compare="paired"@) as in GAGE. Here we only used z-test option to compare the net effect of using differet gene set tests, as detailed in \cite{luo:etal:2009}.
+We may also do PAGE analysis \citep{kim:etal:2005} with or without different combinations of GAGE style options. The key difference is 1) to use z-test instead of two-sample t-test and 2) a group-on-group comparison scheme (by setting arguement \verb@compare="as.group"@) instead of default one-on-one scheme (\verb@compare="paired"@) as in GAGE. Here we only used z-test option to compare the net effect of using differet gene set tests, as detailed in \cite{luo:etal:2009}.
 <<page, echo=TRUE>>=
 gse16873.kegg.page.p <- gage(gse16873, gsets = kegg.gs, 
     ref = hn, samp = dcis, saaTest = gs.zTest)
 head(gse16873.kegg.page.p$greater[, 1:5], 4)
 @ 
 
-We get much smaller p-/q-values with PAGE than with GAGE. As described in GAGE paper \citep{luo:etal:2009}, most significant calls made by PAGE are likely false positives.
+We get much smaller p-/q-values with PAGE than with GAGE. As described in GAGE paper \citep{luo:etal:2009}, many significant calls made by PAGE are likely false positives.
 
 With \Rpackage{gage}, we have much more options to tweak than those related to PAGE for more customized GAGE analysis. Here we show a few other alternative ways of doing GAGE analysis by setting other arguements.
 Use t-test statistics instead of fold change as per gene score:
@@ -172,6 +174,13 @@ gse16873.kegg.unpaired.p <- gage(gse16873, gsets = kegg.gs,
     ref = hn, samp = dcis, compare = "unpaired")
 @ 
 
+Since version 2.2.0, gage package does more robust p-value summarization using Stouffer's method through argument \verb@use.stouffer=TRUE@. The original p-value summarization, i.e. negative log sum following a Gamma distribution as the Null hypothesis, may produce less stable global p-values for large or heterogenous datasets. In other words, the global p-value could be heavily affected by a small subset of extremely small individual p-values from pair-wise comparisons. Such sensitive global p-value leads to the "dual signficance" phenomenon. Dual-signficant means a gene set is called significant simultaneously in both 1-direction tests (up- and down-regulated). While not desirable in other cases, "dual signficance" could be informative in revealing the sub-types or sub-classes in big clinical or disease studies. If we preferred the original Gamma distribution based p-value summarization, we only need to set \verb@use.stouffer=FALSE@:
+
+<<gage.alternative, echo=TRUE, eval=FALSE>>=
+gse16873.kegg.gamma.p <- gage(gse16873, gsets = kegg.gs, 
+    ref = hn, samp = dcis, use.stouffer=FALSE)
+@ 
+
 Sometimes we have expression data where genes are labelled by symbols (or other IDs). Let's make such a dataset \Robject{gse16873.sym} from \Robject{gse16873}, which is originally lable by Entrez Gene IDs.
 <<symbol.ID, echo=TRUE>>=
 head(rownames(gse16873))
@@ -194,7 +203,7 @@ gse16873.kegg.p2 <- gage(gse16873.sym, gsets = kegg.gs.sym,
 
 We may output full result tables from the analysis.
 <<full.table, echo=TRUE>>=
-write.table(gse16873.kegg.2d.p, file = "gse16873.kegg.2d.p.txt", 
+write.table(gse16873.kegg.2d.p$greater, file = "gse16873.kegg.2d.p.txt", 
     sep = "\t")
 write.table(rbind(gse16873.kegg.p$greater, gse16873.kegg.p$less), 
     file = "gse16873.kegg.p.txt", sep = "\t")
@@ -202,15 +211,26 @@ write.table(rbind(gse16873.kegg.p$greater, gse16873.kegg.p$less),
 
 Sort and count signficant gene sets based on q- or p-value cutoffs:
 <<significant.genesets, echo=TRUE>>=
-gse16873.kegg.sig<-sigGeneSet(gse16873.kegg.p, dualSig=1)
+gse16873.kegg.sig<-sigGeneSet(gse16873.kegg.p, outname="gse16873.kegg")
 str(gse16873.kegg.sig, strict.width='wrap')
-gse16873.kegg.2d.sig<-sigGeneSet(gse16873.kegg.2d.p)
+gse16873.kegg.2d.sig<-sigGeneSet(gse16873.kegg.2d.p, outname="gse16873.kegg")
 str(gse16873.kegg.2d.sig, strict.width='wrap')
-write.table(gse16873.kegg.sig, file = "gse16873.kegg.sig.txt", 
+write.table(gse16873.kegg.2d.sig$greater, file = "gse16873.kegg.2d.sig.txt", 
     sep = "\t")
-write.table(gse16873.kegg.2d.sig, file = "gse16873.kegg.2d.sig.txt", 
-    sep = "\t")
+write.table(rbind(gse16873.kegg.sig$greater, gse16873.kegg.sig$less), 
+    file = "gse16873.kegg.sig.txt", sep = "\t")
 @ 
+
+
+\begin{figure} 
+\begin{center} 
+\includegraphics[width=10cm,type=pdf,ext=.pdf,read=.pdf,page=3]{gse16873.kegg.gs.heatmap}
+\includegraphics[width=10cm,type=pdf,ext=.pdf,read=.pdf,page=2]{gse16873.kegg.gs.2d.heatmap}
+\caption{Example heatmaps generated with \Rfunction{sigGeneSet} function as to show whole gene set perturbations. Upper panel: signficant KEGG pathways in 1-directional (either up or down) test; lower panel: signficant KEGG pathways in 2-directional test. Only gene set test statistics are shown, heatmaps for -log10(p-value) look similar.}
+\end{center}  
+\end{figure} 
+
+Heatmaps in Figure 1 visualize whole gene set perturbations, i.e. the gene set test statistics (or p-values) in pseudo-color.
 
 There are frequently multiple significant gene sets that share multiple member genes or represent the same regulatory mechanism. Such redundancy in signficant gene set could be misleading too. A pathway or functional group itself is not relevant, but may be called signficant because it share multiple perturbed genes with one really significant gene set. We derive the non-redundant signficant gene set lists, with result output as tab-delimited text files automatically below. Here, function \Rfunction{esset.grp} calls redundant gene sets to be those overlap heavily in their core genes. Core genes are those member genes that really contribute to the signficance of the gene set in GAGE analysis. Arguement \verb@pc@ is the cutoff p-value for the overlap between gene sets, default to \verb@10e-10@, may need trial-and-error to find the optimal value in minor cases. Note that we use small \verb@pc@ because redundant gene sets are not just signficant in overlap, but are HIGHLY significant so.
 <<nonredundant.genesets, echo=TRUE>>=
@@ -242,13 +262,13 @@ for (gs in rownames(gse16873.kegg.p$greater)[1:3]) {
 }
 @ 
 
-Figure 1 and 2 show example heatmap and scatter plots generated by the code chunk above.
+Figure 2 shows example heatmap and scatter plots generated by the code chunk above.
 
 \begin{figure} 
 \begin{center} 
 \includegraphics[width=10cm,type=pdf,ext=.pdf,read=.pdf]{Oxidative_phosphorylation.geneData.heatmap}
 \includegraphics[width=10cm,type=pdf,ext=.pdf,read=.pdf]{Oxidative_phosphorylation.geneData}
-\caption{Example heatmap and scatter plot generated with \Rfunction{geneData} function. Only HN (control) and DCIS (experiment) data from the first two patients are plotted in the scatter plot.}
+\caption{Example heatmap and scatter plot generated with \Rfunction{geneData} function to show the gene expresion perturbations in specified gene set(s). Only HN (control) and DCIS (experiment) data from the first two patients are plotted in the scatter plot.}
 \end{center}  
 \end{figure} 
 
@@ -274,7 +294,7 @@ gagePipe(gse16873, gsname = "kegg.gs", dataname = "gse16873",
     comp.list = "paired")
 @ 
 
-We may further loaded the \verb@.RData@ results, and do more analysis. For instance, we may compare the GAGE analysis results from the differen comparisons or different sub-datasets we have worked on. Here, the main function to use is \Rfunction{gageComp}. Comparison rsults between multiple GAGE analyses will be output as text files and optionally, venn diagram can be plotted in PDF format as shown in Figure 2.
+We may further loaded the \verb@.RData@ results, and do more analysis. For instance, we may compare the GAGE analysis results from the differen comparisons or different sub-datasets we have worked on. Here, the main function to use is \Rfunction{gageComp}. Comparison rsults between multiple GAGE analyses will be output as text files and optionally, venn diagram can be plotted in PDF format as shown in Figure 3.
 <<gageComp, echo=TRUE>>=
 load('gse16873.gage.RData')
 gageComp(sampnames, dataname, gsname = "kegg.gs", 
@@ -284,13 +304,14 @@ gageComp(sampnames, dataname, gsname = "kegg.gs",
 \begin{figure} 
 \begin{center} 
 \includegraphics[trim = 25mm 40mm 25mm 40mm, width=8cm,type=pdf,ext=.pdf,read=.pdf,page=2]{gse16873.gage.comp}
-\caption{An example venn diagram generated with \Rfunction{gageComp} function. Compared are the lists of up and down regulated KEGG pathways for the two half datasets of GSE16873 when \Rfunction{gagePipe} was applied above.}
+\caption{An example venn diagram generated with \Rfunction{gageComp} function. Compared are KEGG pathway results for the two half datasets when \Rfunction{gagePipe} was applied above.}
 \end{center}  
 \end{figure} 
 
+
 GAGE with single array analysis design also provide a framework for combined analysis accross heterogeneous microarray studies/experiments. The combined dataset of \verb@gse16873@ and \verb@gse16873.2@ provids a good example of heterogeneous data. As mentioned above, the two half-datasets were processed using FARMS \citep{hochreiter:etal:2006} and RMA \citep{iriz:etal:2003} methods separately. Therefore, the expression values and distributions are dramatically different between the two halves. Using function \Rfunction{heter.gage} we can do some combined analysis on such heterogeneous dataset(s). \Rfunction{heter.gage} is similar to \Rfunction{gagePipe} in that \verb@ref.list@ and \verb@samp.list@ arguements need to be lists of column numbers with matching vector of the \verb@compare@ arguement. Different from \Rfunction{gagePipe}, \Rfunction{heter.gage} does one combined GAGE analysis on all data instead of multiple separate analyses on different sub-datasets/comparisons.
 
-Just to have an idea on how heterogeneous these two half datasets are, we may visualize the expression level distributions (Figure 3): 
+Just to have an idea on how heterogeneous these two half datasets are, we may visualize the expression level distributions (Figure 4): 
 
 <<heter.gage, fig=TRUE, echo=TRUE, include=FALSE>>=
 boxplot(data.frame(gse16873))

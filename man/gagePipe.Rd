@@ -8,12 +8,13 @@ GAGE analysis pipeline
 \description{
   Function gagePipe runs mutliple rounds of GAGE in a
   batch without interference, and outputs signcant gene set lists in text
-  format and save the results in RData format.
+  format, heatmaps in pdf format, and save the results in RData format.
 }
 \usage{
 gagePipe(arraydata, dataname = "arraydata", trim.at=TRUE, sampnames, gsdata = NULL,
 gsname = c("kegg.gs", "go.gs"), ref.list, samp.list, weight.list = NULL,
-comp.list = "paired", q.cutoff = 0.1, ...)
+comp.list = "paired", q.cutoff = 0.1, heatmap=TRUE, pdf.size = c(7,
+7), p.limit=c(0.5, 5.5), stat.limit=5, ... )
 }
 
 \arguments{
@@ -82,8 +83,32 @@ comp.list = "paired", q.cutoff = 0.1, ...)
     numeric, q-value cutoff between 0 and 1 for signficant gene sets
     selection. Default to be 0.1.
   }
+  \item{heatmap}{
+    boolean, whether to plot heatmap for the selected gene data as a PDF
+    file. Default to be FALSE.
+  }
+  \item{pdf.size}{
+    a numeric vector to specify the  the width and height of PDF
+    graphics region in inches. Default to be c(7, 7).
+  }
+  \item{stat.limit}{
+    numeric vector of length 1 or 2 to specify the value range of gene
+    set statistics to visualize using the heatmap. Statistics beyong will be
+    reset to equal the proximal limit. Default to 5, i.e. plot all gene set statistics
+    within (-5, 5) range. May also be NULL, i.e. plot all statistics
+    without limit. This argument allows optimal differentiation between most gene
+    set statistic values when extremely positive/negative values exsit and squeeze
+    the normal-value region.
+  }
+  \item{p.limit}{
+    numeric vector of length 1 or 2 to specify the value range of gene
+    set -log10(p-values) to visualize using the heatmap. Values beyong will be
+    reset to equal the proximal limit. Default to c(0.5,5.5), i.e. plot all -log10(p-values)
+    within this range. This argument is similar to argument stat.limit.
+  }
   \item{\dots}{
-    other arguments to be passed into \code{gage}.
+    other arguments to be passed into \code{gage} or \code{gs.heatmap}
+    function, which is a wrapper of the \code{heatmap2} function.
   }
 }
 \details{
@@ -92,12 +117,14 @@ comp.list = "paired", q.cutoff = 0.1, ...)
   gene set collection specified in \code{gsnames}: one test for
   1-direction changes (up- or down-regualted gene sets), one test for
   2-direction changes (two-way perturbed gene sets). Correspondingly,
-  the \code{gage} result matrix for the signficant gene sets are written
+  the \code{gage} result p-value matrices for the signficant gene sets are written
   into two tab-delimited text files, named after the \code{dataname}
   and \code{sampnames}. Note that the text file for 1-direction changes
   tests combines results for both up- and down-regulated gene
-  sets. Meanwhile, the full \code{gage} analysis result objects
-  (matrices or lists of matrices) are saved into a .RData file. The
+  sets. By default, heatmaps in pdf format are also produced to show the gene set
+  perturbations using either -log10(p-value) or statistics. Meanwhile,
+  the full \code{gage} analysis result objects 
+  (named lists of p-value or statistics matrices) are saved into a .RData file. The
   result objects are name after the \code{sampnames} and
   \code{gsnames}.
 }
@@ -111,7 +138,7 @@ comp.list = "paired", q.cutoff = 0.1, ...)
   Bioinformatics 2009, 10:161
 }
 \author{
-  Weijun Luo <luo@cshl.edu>
+  Weijun Luo <luo_weijun@yahoo.com>
 }
 
 

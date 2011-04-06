@@ -1,3 +1,2 @@
-odd <-
-function(x) x%%2 == 1
-
+odd <- function(x) x%%2 == 1
+ 

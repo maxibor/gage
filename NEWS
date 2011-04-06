@@ -1,0 +1,41 @@
+version 2.2.x
+
+  o More robust p-value summarization using Stouffer's method through
+    argument use.stouffer=TRUE. The original p-value summarization,
+    i.e. negative log sum following a Gamma distribution as the Null
+    hypothesis, may produce less stable global p-values for large or
+    heterogenous datasets. In other words, the global p-value could be
+    heavily affected by a small subset of extremely small individual
+    p-values from pair-wise comparisons. Such sensitive global p-value
+    leads to the "dual signficance" phenomenon. Dual-signficant means
+    a gene set is called significant simultaneously in both
+    1-direction tests (up- and down-regulated). "Dual signficance"
+    could be informative in revealing the sub-types or sub-classes in
+    big clinical or disease studies, but may not be desirable in other
+    cases.
+
+
+  o Output of gage function now includes the gene set test statistics
+    from pair-wise comparisons for all proper gene sets. The output is
+    always a named list now, with either 3 elements ("greater",
+    "less", "stats") for one-directional test or 2 elements
+    ("greater", "stats") for two-directional test.
+
+  o The individual p-value (and test statistics)from dependent
+    pair-wise comparisions, i.e. comparisions between the same
+    experiment vs different controls, are now summarized into a single
+    value. In other words, the column number of individual p-values or
+    statistics is always the same as the sample number in the
+    experiment (or disease) group. This change made the argument value
+    compare="1ongroup" and argument full.table less useful. It also
+    became easier to check the perturbations at gene-set level for
+    individual samples.
+
+  o Whole gene-set level changes (either p-values or statistics) can
+    now be visualized using heatmaps due to the third change above.
+    Correspondingly, functions \code{sigGeneSet} and \code{gagePipe}
+    have been revised to plot heatmaps for whole gene sets.
+
+  o Fixed a bug in gs.zTest function: mod <- (length(ix)/s)^(1/2), it
+    is mod <- length(ix)^(1/2)/s before. Thanks to Nhan Thi HO from
+    Michigan State University.

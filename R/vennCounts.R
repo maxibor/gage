@@ -1,5 +1,4 @@
-vennCounts <-
-function(x, include = "both") {
+vennCounts <- function(x, include = "both") {
     x <- as.matrix(x)
     include <- match.arg(include, c("both", "up", "down"))
     x <- sign(switch(include, both = abs(x), up = x > 0, down = x < 
@@ -20,4 +19,4 @@ function(x, include = "both") {
     counts <- as.vector(table(xlist))
     structure(cbind(outcomes, Counts = counts), class = "VennCounts")
 }
-
+ 

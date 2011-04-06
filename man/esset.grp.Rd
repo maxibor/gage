@@ -22,7 +22,7 @@ c(10, 100), ...)
 
 \arguments{
     \item{setp}{
-    a numeric matrix, the result matrix returned by \code{gage}
+    a numeric matrix, the result p-value matrix returned by \code{gage}
     function. Check \code{gage} help information for details.
   }
   \item{exprs}{
@@ -184,7 +184,7 @@ c(10, 100), ...)
   Bioinformatics 2009, 10:161
 }
 \author{
-  Weijun Luo <luo@cshl.edu>
+  Weijun Luo <luo_weijun@yahoo.com>
 }
 
 \seealso{
@@ -212,7 +212,7 @@ gse16873.kegg.esg.up <- esset.grp(gse16873.kegg.p$greater,
 gse16873.kegg.esg.dn <- esset.grp(gse16873.kegg.p$less,
     gse16873, gsets = kegg.gs, ref = hn, samp = dcis,
     test4up = FALSE, output = TRUE, outname = "gse16873.kegg.dn", make.plot = FALSE)
-gse16873.kegg.esg.2d <- esset.grp(gse16873.kegg.2d.p,
+gse16873.kegg.esg.2d <- esset.grp(gse16873.kegg.2d.p$greater,
     gse16873, gsets = kegg.gs, ref = hn, samp = dcis,
     test4up = TRUE, output = TRUE, outname = "gse16873.kegg.2d", make.plot = FALSE)
 names(gse16873.kegg.esg.up)

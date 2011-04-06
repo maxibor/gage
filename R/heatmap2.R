@@ -1,5 +1,4 @@
-heatmap2 <-
-function(x, Rowv = TRUE, Colv = if (symm) "Rowv" else TRUE, 
+heatmap2 <- function(x, Rowv = TRUE, Colv = if (symm) "Rowv" else TRUE, 
     distfun = dist, hclustfun = hclust, dendrogram = c("both", 
         "row", "column", "none"), symm = FALSE, scale = c("none", 
         "row", "column"), na.rm = TRUE, revC = identical(Colv, 
@@ -342,4 +341,4 @@ function(x, Rowv = TRUE, Colv = if (symm) "Rowv" else TRUE,
     else plot.new()
     invisible(list(rowInd = rowInd, colInd = colInd))
 }
-
+ 

@@ -1,5 +1,4 @@
-vennDiagram2 <-
-function(object, object.2, include = c("up", 
+vennDiagram2 <- function(object, object.2, include = c("up", 
     "down"), names, mar = rep(1, 4), cex = 1.5, lwd = 1, circle.col, 
     counts.col = c("red", "green"), show.include, ...) {
     if (!is(object, "VennCounts")) {
@@ -90,4 +89,4 @@ function(object, object.2, include = c("up",
         printing(counts.2, cex, c(0.5, 1), counts.col[2], include[2])
     invisible()
 }
-
+ 

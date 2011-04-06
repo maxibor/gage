@@ -24,15 +24,15 @@
 gage(exprs, gsets, ref = NULL, samp = NULL, set.size = c(10, 500),
 same.dir = TRUE, compare = "paired", rank.test = FALSE, use.fold = TRUE,
 FDR.adj = TRUE, weights = NULL, full.table = FALSE, saaPrep = gagePrep,
-saaTest = gs.tTest, saaSum = gageSum, ...)
+saaTest = gs.tTest, saaSum = gageSum, use.stouffer=TRUE, ...)
 
 gagePrep(exprs, ref = NULL, samp = NULL, same.dir = TRUE, compare =
 "paired", rank.test = FALSE, use.fold = TRUE, weights = NULL, full.table =
 FALSE, ...)
 
-gageSum(p.results, ref = NULL, mstat = NULL, setsizes = NULL, same.dir =
+gageSum(rawRes, ref = NULL, test4up = TRUE, same.dir =
 TRUE, compare = "paired", use.fold = TRUE, weights = NULL, full.table =
-FALSE, ...)
+FALSE, use.stouffer=TRUE, ...)
 }
 
 \arguments{
@@ -113,10 +113,8 @@ FALSE, ...)
     function. Default to be NULL.
   }
   \item{full.table}{
-    Boolean, whether to output the full table of all individual p-values
-    from the pairwise comparisons of ref and samp. This option is only
-    effective for over 10 ref-samp pairs, all individual p-values will
-    be output when the number is less than or equal than 10. Default to
+    This option is obsolete. Boolean, whether to output the full table of all individual p-values
+    from the pairwise comparisons of ref and samp. Default to
     be FALSE.
   }
   \item{saaPrep}{
@@ -141,19 +139,31 @@ FALSE, ...)
     be gageSum, i.e. the default data summarization routine for gage
     analysis.
   }
-  \item{p.results }{
-    a numeric matrix of p-values for up-regulation (greater than) or
-    down-regulation (less than) tests, i.e. the 2nd or 3rd list element
-    returned by calling saaTest function. Gene
-    sets are rows, samp-ref pairs are columns
-  }
-  \item{mstat }{
-    vector of  test statistics mean for individual gene sets, the 4th
-    list element returned by calling saaTest function.
-  }
-  \item{setsizes }{
-    vector of effective set size (number of genes) individual gene
-    sets, the 5th list element returned by calling saaTest function. 
+  \item{rawRes}{
+    a named list, the raw results of gene set tests. Check the help
+    information of gene set test functions like \code{gs.tTest} for
+    details. 
+}
+    \item{test4up}{
+    boolean, whether to summarize the p-value results for up-regulation
+    test (p.results) or not (ps.results for down-regulation).
+    This argument is only needed when
+    the argument same.dir=TRUE in the main \code{gage} function,
+    i.e. when test for one-directional changes.
+}
+
+  \item{use.stouffer}{
+    Boolean, whether to use Stouffer's method when summarizing
+    individual p-values into a global p-value. Default to
+    be TRUE. This default setting is recommended as to avoid the "dual
+    significance", i.e. a gene set is significant for both up-regulation
+    and down-regulation tests simultaneously. Dual signficance  occurs
+    sometimes for data with large sample size, due to extremely small
+    p-values in a few pair-wise comparison. More robust p-value
+    summarization using Stouffer's method is a
+    important new feature added to GAGE since version 2.2.0
+    (Bioconductor 2.8). This new argument is set as to provide a option
+    to the original summarization based on Gamma distribution (FALSE).
   }
   \item{\dots}{
     other arguments to be passed into the optional functions for
@@ -175,29 +185,64 @@ FALSE, ...)
   general applicability of single array analysis. More examples will be
   included in a second vignette to demonstrate the customization with
   these modules.
-}
+
+  some important updates has been made to gage package since version 2.2.0
+  (Bioconductor 2.8):
+  First,  more robust p-value summarization using Stouffer's method
+  through argument use.stouffer=TRUE. The original p-value
+  summarization, i.e. negative log sum following a Gamma distribution as
+  the Null hypothesis, may produce less stable global p-values for large
+  or heterogenous datasets. In other words, the global p-value could be
+  heavily affected by a small subset of extremely small individual
+  p-values from pair-wise comparisons. Such sensitive global p-value
+  leads to the "dual signficance" phenomenon. Dual-signficant means a gene set is called
+    significant simultaneously in both 1-direction tests (up- and
+    down-regulated). "Dual
+    signficance" could be informative in revealing the sub-types or
+    sub-classes in big clinical or disease studies, but may not be
+    desirable in other cases.
+    Second, output of gage function now includes the gene set test
+    statistics from pair-wise comparisons for all proper gene sets. The
+    output is always a named list now, with either 3 elements
+    ("greater", "less", "stats") for one-directional test or 2 elements
+    ("greater", "stats") for two-directional test. 
+    Third, the individual p-value (and test statistics)from dependent pair-wise
+    comparisions, i.e. comparisions between the same experiment vs
+    different controls, are now summarized into a single value. In other
+    words, the column number of individual p-values or statistics is
+    always the same as the sample number in the experiment (or disease)
+    group. This change made the argument value compare="1ongroup"
+    and argument full.table less useful. It also became easier to check the
+    perturbations at gene-set level for individual samples. 
+    Fourth, whole gene-set level changes (either p-values or statistics)
+    can now be visualized using heatmaps due to the third change above.
+    Correspondingly, functions \code{sigGeneSet} and \code{gagePipe} have
+    been revised to plot heatmaps for whole gene sets. 
+  }
 \value{
-  The result returned by gage function is either a single data matrix
-  (same.dir = FALSE, test for two-directional changes) or
-  a named list of two data matrix (same.dir = TRUE, test for single-direction
-  changes) for the results of up- ($greater) and down- ($less) regulated
-  gene sets. Each data matrix here has gene sets as rows sorted by
-  global p-values, with  multiple
-  statistics columns, including:
-  \item{P.geomean }{geometric mean of the individual p-values from
+  The result returned by gage function is a named list, with either 3 elements
+    ("greater", "less", "stats") for one-directional test (same.dir =
+    TRUE) or 2 elements ("greater", "stats") for two-directional test
+    (same.dir = FALSE). Elements "greater" and "less" are two data
+    matrices of the same structure, mainly the p-values, element "stats"
+    contains the test statistics. Each data matrix here has gene sets as rows sorted by
+    global p- or q-values. Test signficance or statistics columns include:
+  \item{p.geomean }{geometric mean of the individual p-values from
     multiple single array based gene set tests}
   \item{stat.mean }{mean of the individual statistics from multiple
     single array based gene set tests}
-  \item{P.erlang }{gloal p-value or summary of the individual p-values from
+  \item{p.val }{gloal p-value or summary of the individual p-values from
     multiple single array based gene set tests. This is the default
     p-value being used.}
-  \item{q.BH }{FDR q-value adjustment of the global p-value using
+  \item{q.val }{FDR q-value adjustment of the global p-value using
     the Benjamini & Hochberg procedure implemented in multtest
     package. This is the default q-value being used.}
   \item{set.size }{the effective gene set size, i.e. the number of genes
     included in the gene set test}
-  \item{other columns }{optional columns of the individual p-values from
-    multiple single array based gene set tests}
+  \item{other columns }{columns of the individual p-values or
+    statistics, each measures the gene set perturbation in a single
+    experiment (vs its control or all controls, depends on the
+    "compare argument value)}
 
   The result returned by \code{gagePrep} is a data matrix derived from 
   \code{exprs}, but ready for column-wise gene est tests. In the
@@ -205,18 +250,16 @@ FALSE, ...)
   statistics from the ref-samp pairwise comparison.
 
   The result returned by \code{gageSum} is almost identical to the results
-  of \code{gage} function, except without the optional columns of
-  individual p-values and without row sorting by global p-values.
+  of \code{gage} function, it is also a named list but has only 2
+  elements, "p.glob" and "results", with one round of test results. 
 }
 \references{
   Luo, W., Friedman, M., Shedden K., Hankenson, K. and Woolf, P GAGE:
   Generally Applicable Gene Set Enrichment for Pathways Analysis. BMC
   Bioinformatics 2009, 10:161
-
-  More information at: http://sysbio.engin.umich.edu/~luow/downloads.php
 }
 \author{
-  Weijun Luo <luo@cshl.edu>
+  Weijun Luo <luo_weijun@yahoo.com>
 }
 
 \seealso{
@@ -242,12 +285,14 @@ gse16873.kegg.p <- gage(gse16873, gsets = kegg.gs,
 gse16873.go.p <- gage(gse16873, gsets = go.gs, 
     ref = hn, samp = dcis)
 str(gse16873.kegg.p)
-head(gse16873.kegg.p$greater[, 1:5])
-head(gse16873.kegg.p$less[, 1:5])
+head(gse16873.kegg.p$greater)
+head(gse16873.kegg.p$less)
+head(gse16873.kegg.p$stats)
 #kegg test for 2-directional changes
 gse16873.kegg.2d.p <- gage(gse16873, gsets = kegg.gs, 
     ref = hn, samp = dcis, same.dir = FALSE)
-head(gse16873.kegg.2d.p[, 1:5])
+head(gse16873.kegg.2d.p$greater)
+head(gse16873.kegg.2d.p$stats)
 
 ###alternative ways to do GAGE analysis###
 #with unpaired samples
