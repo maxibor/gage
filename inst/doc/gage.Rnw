@@ -334,6 +334,7 @@ We may compare the results from this combined analysis of the combined dataset v
 \section{Common Errors}
 \begin{itemize}
 \item Gene sets and expression data use different ID systems (Entrez Gene ID, Gene symbol or probe set ID etc). To correct, use functions like eg2sym or sym2eg, or if you used customized CDF file based on Entrez Gene to processed the raw data, do: \verb@rownames(gse16873)=gsub('_at', '', rownames(gse16873))@.
+\item We use gene set data for a different species than the expression data, e.g. use \verb@kegg.mm@ instead of \verb@kegg.gs@ for human data. When running \verb@gage@ or \verb@gagePipe@ function, we get error message like, \verb@Error in if (is.na(spval[i])) tmp[i] <- NA : argument is of length zero@.
 \item Expression data have multiple probesets (as in Affymetrix GeneChip Data) for a single gene, but gene set analysis requires one entry per gene. You may pick up the most differentially expressed probeset for a gene and discard the rest, or process the raw intensity data using customized probe set definition (CDF file), where probes are re-mapped on a gene by gene base. Check the Methods section of GAGE paper \citep{luo:etal:2009} for details.
 \item Expression data have genes as columns and samples/chips as rows, i.e. in a transposed form. To correct, do: \verb@expdata=t(expdata)@.
 \end{itemize}

@@ -24,10 +24,12 @@ gageSum <- function(rawRes, ref = NULL, test4up = TRUE,
             mod = sum(weights)^(-0.5)
         else mod = nc^(-0.5)
         p.val <- pnorm(q.glob * mod)
-        p.results = as.matrix(t(aggregate(t(q.results), list(colnames(q.results)), 
+        if(length(cns)!=nc & length(cns)>1){
+          p.results = as.matrix(t(aggregate(t(q.results), list(colnames(q.results)), 
             function(x) pnorm(mean(x)))[, -1]))[, ord]
-        colnames(p.results) = cns
-    }
+          colnames(p.results) = cns
+        }
+      }
     else {
         if (compare == "unpaired" & use.fold) {
             p.val <- pgamma(sg.glob/length(ref), shape = nc/length(ref), 
@@ -40,13 +42,17 @@ gageSum <- function(rawRes, ref = NULL, test4up = TRUE,
         else {
             p.val <- pgamma(sg.glob, shape = nc, rate = 1, lower.tail = FALSE)
         }
-        p.results = as.matrix(t(aggregate(t(p.results), list(colnames(p.results)), 
+        if(length(cns)!=nc & length(cns)>1){
+          p.results = as.matrix(t(aggregate(t(p.results), list(colnames(p.results)), 
             function(x) exp(mean(log(x))))[, -1]))[, ord]
-        colnames(p.results) = cns
-    }
+          colnames(p.results) = cns
+        }
+      }
+        if(length(cns)!=nc & length(cns)>1){
     results = as.matrix(t(aggregate(t(results), list(colnames(results)), 
         mean, na.rm = TRUE)[, -1]))[, ord]
     colnames(results) = cns
+}
     mstat = apply(results, 1, mean, na.rm = TRUE)
     Fdr = NULL
     
