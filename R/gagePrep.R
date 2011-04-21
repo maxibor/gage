@@ -6,7 +6,9 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
     if (is.numeric(exprs)) {
         exprs <- cbind(exprs)
         nc <- ncol(exprs)
-    }
+        if(nc==1 & is.null(colnames(exprs))) colnames(exprs)='data'
+        if(is.null(colnames(exprs))) stop("column names need to be specified")
+      }
     else stop("exprs needs to be a numeric matrix or vector")
     if (!is.null(ref)) {
         if (!is.numeric(ref)) 
@@ -22,7 +24,7 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
         else samp = (1:ncol(exprs))[-ref]
         if (use.fold) {
             if (compare == "as.group") {
-                exprs = cbind(apply(cbind(exprs[, samp]), 1, 
+                exprs = cbind(mean.fc=apply(cbind(exprs[, samp]), 1, 
                   mean) - apply(cbind(exprs[, ref]), 1, mean))
             }
             else if (compare == "paired") {
@@ -48,11 +50,12 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
                 ref_mean <- (if (length(ref) > 1) 
                   apply(exprs[, ref], 1, mean, na.rm = TRUE)
                 else exprs[, ref])
-                exprs <- exprs[, samp] - ref_mean
+                exprs <- cbind(exprs[, samp] - ref_mean)
+                colnames(exprs) <- colnames(exprs)[samp]
             }
         }
         else if (length(ref) > 1 & length(samp) > 1) {
-            exprs = cbind(apply(exprs, 1, function(x) t.test(x[samp], 
+            exprs = cbind(t.stat=apply(exprs, 1, function(x) t.test(x[samp], 
                 x[ref], alternative = "two.sided", paired = (compare == 
                   "paired" & length(ref) == length(samp)))$statistic))
         }
@@ -61,7 +64,7 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
     else if (nc > 1) {
         if (use.fold) {
             if (compare == "as.group") {
-                exprs = cbind(apply(exprs, 1, mean))
+                exprs = cbind(mean.fc=apply(exprs, 1, mean))
             }
             else if (compare == "paired") {
                 if (!is.null(weights) & nc != length(weights)) 
@@ -70,13 +73,14 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
             else stop("improper 'compare' argument  value")
         }
         else {
-            exprs = cbind(apply(exprs, 1, function(x) t.test(x, 
+            exprs = cbind(t.stat=apply(exprs, 1, function(x) t.test(x, 
                 alternative = "two.sided", paired = F)$statistic))
             print("one sample t-test per gene")
         }
     }
     
     exprs = cbind(exprs)
+    if(ncol(exprs)==1) colnames(exprs)="exp1"
     if (!same.dir) 
         exprs = abs(exprs)
     if (rank.test) 
