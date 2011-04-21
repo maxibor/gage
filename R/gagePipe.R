@@ -87,7 +87,7 @@ gagePipe <- function(arraydata, dataname = "arraydata",
                   paste(gs, ".p", sep = ""), sep = "."), "txt", 
                   sep = ".")
                 cat("Gene Set\t", paste(colnames(eval(as.name(paste(sampnames[i], 
-                  paste(gs, ".p", sep = ""), sep = ".")))[[1]]), 
+                  paste(gs, ".p", sep = ""), sep = ".")))$greater), 
                   collapse = "\t"), "\n", file = filename, sep = "")
                 write.table(outdata, file = filename, sep = "\t", 
                   col.names = F, append = T)
@@ -135,7 +135,7 @@ gagePipe <- function(arraydata, dataname = "arraydata",
                   paste(gs, ".2d.p", sep = ""), sep = "."), "txt", 
                   sep = ".")
                 cat("Gene Set\t", paste(colnames(eval(as.name(paste(sampnames[i], 
-                  paste(gs, ".2d.p", sep = ""), sep = ".")))), 
+                  paste(gs, ".2d.p", sep = ""), sep = ".")))$greater), 
                   collapse = "\t"), "\n", file = filename, sep = "")
                 write.table(gage.p.sel1, file = filename, sep = "\t", 
                   col.names = F, append = T)
