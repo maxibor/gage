@@ -91,7 +91,7 @@ gagePipe <- function(arraydata, dataname = "arraydata",
                   collapse = "\t"), "\n", file = filename, sep = "")
                 write.table(outdata, file = filename, sep = "\t", 
                   col.names = F, append = T)
-                if (heatmap & nrow(outdata) > 1) {
+                if (heatmap & nrow(outdata) > 1 & ncol(outdata) > 6) {
                   pdfname = paste(dataname, paste(sampnames[i], 
                     gs, sep = "."), "heatmap.pdf", sep = ".")
                   pdf(pdfname, width = pdf.size[1], height = pdf.size[2])
@@ -113,9 +113,12 @@ gagePipe <- function(arraydata, dataname = "arraydata",
                     main = "Test statistics", ...)
                   dev.off()
                 }
-                else if (heatmap) 
+                else if (heatmap & ncol(outdata) > 6) 
                   print(paste("No heatmap produced for up- or down-regulated", 
                     gs, "gene sets, only 1 or none signficant."))
+                else if (heatmap)
+                  print(paste("No heatmap produced for up- or down-regulated", 
+                    gs, "gene sets, due to single-column data"))
                 
             }
             else print(paste("No", gs, "gene sets are signficant in one-direction!"))
@@ -140,7 +143,7 @@ gagePipe <- function(arraydata, dataname = "arraydata",
                 write.table(gage.p.sel1, file = filename, sep = "\t", 
                   col.names = F, append = T)
                 
-                if (heatmap & length(rn1) > 1) {
+                if (heatmap & length(rn1) > 1 & ncol(gage.p.sel1) > 6) {
                   pdfname = paste(dataname, paste(sampnames[i], 
                     gs, sep = "."), "2d.heatmap.pdf", sep = ".")
                   pdf(pdfname, width = pdf.size[1], height = pdf.size[2])
@@ -151,9 +154,12 @@ gagePipe <- function(arraydata, dataname = "arraydata",
                     main = "Test statistics", ...)
                   dev.off()
                 }
-                else if (heatmap) 
+                else if (heatmap & ncol(gage.p.sel1) > 6) 
                   print(paste("No heatmap produced for two-way perturbed", 
                     gs, "gene sets, only 1 signficant."))
+                else if (heatmap)
+                  print(paste("No heatmap produced for two-way perturbed", 
+                    gs, "gene sets, due to single-column data"))
                 
             }
             else print(paste("No", gs, "gene sets are signficant in two-direction!"))

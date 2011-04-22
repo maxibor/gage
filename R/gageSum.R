@@ -18,7 +18,7 @@ gageSum <- function(rawRes, ref = NULL, test4up = TRUE,
             q.glob <- apply(q.results, 1, sum)
         else q.glob <- apply(q.results, 1, function(x) sum(x * 
             weights))
-        if (compare == "unpaired" & use.fold) 
+        if (compare == "unpaired" & use.fold & length(ref)>0) 
             mod = (nc * length(ref))^(-0.5)
         else if (!is.null(weights)) 
             mod = sum(weights)^(-0.5)
@@ -31,7 +31,7 @@ gageSum <- function(rawRes, ref = NULL, test4up = TRUE,
         }
       }
     else {
-        if (compare == "unpaired" & use.fold) {
+        if (compare == "unpaired" & use.fold & length(ref)>0) {
             p.val <- pgamma(sg.glob/length(ref), shape = nc/length(ref), 
                 rate = 1, lower.tail = FALSE)
         }

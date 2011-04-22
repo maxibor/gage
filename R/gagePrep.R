@@ -21,7 +21,10 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
             if (!is.numeric(samp)) 
                 stop("sample column index's required")
         }
-        else samp = (1:ncol(exprs))[-ref]
+        else samp = (1:nc)[-ref]
+        if(length(ref)==0 | !all(ref %in% 1:nc)) stop("wrong reference column index")
+        if(length(samp)==0 | !all(samp %in% 1:nc)) stop("wrong sample column index")
+        
         if (use.fold) {
             if (compare == "as.group") {
                 exprs = cbind(mean.fc=apply(cbind(exprs[, samp]), 1, 
@@ -39,7 +42,7 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
                     ref], ncol = length(samp), dimnames = list(rownames(exprs), 
                     colnames(exprs)[samp]))
                 }
-                else stop("please make sure 'ref' and 'samp' are comparable and of equal length")
+                else stop("please make sure 'ref' and 'samp' are comparable and of equal length or compare='unpaired'")
             }
             else if (compare == "unpaired" & (length(ref) * length(samp) > 
                 1)) {
@@ -79,7 +82,7 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
         }
     }
     
-    exprs = cbind(exprs)
+#    exprs = cbind(exprs)
     if(ncol(exprs)==1) colnames(exprs)="exp1"
     if (!same.dir) 
         exprs = abs(exprs)
