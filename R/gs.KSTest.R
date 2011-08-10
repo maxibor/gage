@@ -1,4 +1,4 @@
-gs.KSTest <- function(exprs, gsets, set.size = c(10, 
+gs.KSTest2 <- function(exprs, gsets, set.size = c(10, 
     500), same.dir = TRUE, ...) {
     if (class(gsets) != "list") 
         stop("gsets need to be a list")
@@ -45,11 +45,17 @@ gs.KSTest <- function(exprs, gsets, set.size = c(10,
             res <- ks.test(x, seq_len(nr)[-x], alternative = "less")
             return(c(res$statistic, res$p.value))
         })
-        results[i, ] <- ks.res[1, ]
         p.results[i, ] <- ks.res[2, ]
-        ps.results[i, ] <- apply(texprs, 2, function(x) ks.test(x, 
-            seq_len(nr)[-x], alternative = "greater")$p.value)
+
+        ks.res2 <- apply(texprs, 2, function(x) {
+            res <- ks.test(x, seq_len(nr)[-x], alternative = "greater")
+            return(c(res$statistic, res$p.value))
+        })
+        ps.results[i, ] <- ks.res2[2, ]
+
+	results[i, ] <- mapply(max, ks.res[1, ], ks.res2[1, ])
         mstat[i] = mean(results[i, ])
+
     }
     if (!same.dir) 
         ps.results = NULL
