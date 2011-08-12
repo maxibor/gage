@@ -1,4 +1,4 @@
-gs.KSTest2 <- function(exprs, gsets, set.size = c(10, 
+gs.KSTest <- function(exprs, gsets, set.size = c(10, 
     500), same.dir = TRUE, ...) {
     if (class(gsets) != "list") 
         stop("gsets need to be a list")

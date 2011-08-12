@@ -74,7 +74,10 @@ gs.KSTest(exprs, gsets, set.size = c(10, 500), same.dir = TRUE, ...)
   \item{ps.results }{matrix of p-values for down-regulation (less than) tests, gene
     sets are rows, samp-ref pairs are columns}
   \item{mstat }{vector of  test statistics mean for individual gene
-    sets}
+    sets. Normally, its absoluate value
+    measures the magnitude of gene-set level changes, and its sign
+    indicates direction of the changes. For gs.KSTest,
+    mstat is always positive.}
   \item{setsizes }{vector of effective set size (number of genes) individual gene
     sets}
 }

@@ -230,7 +230,10 @@ FALSE, use.stouffer=TRUE, ...)
   \item{p.geomean }{geometric mean of the individual p-values from
     multiple single array based gene set tests}
   \item{stat.mean }{mean of the individual statistics from multiple
-    single array based gene set tests}
+    single array based gene set tests. Normally, its absoluate value
+    measures the magnitude of gene-set level changes, and its sign
+    indicates direction of the changes. When saaTest=gs.KSTest,
+    stat.mean is always positive.}
   \item{p.val }{gloal p-value or summary of the individual p-values from
     multiple single array based gene set tests. This is the default
     p-value being used.}
