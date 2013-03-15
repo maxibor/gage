@@ -1,4 +1,25 @@
-version 2.2.x
+version 2.9.1
+
+  o removed dependency on multtest package for p-value FDR adjustment,
+    use p.adjust function of the stat package instead.
+
+  o change "depends" to "imports" for graph package as we only need to
+    import graphNEL class and connComp method.
+
+  o subset kegg.gs. From now, kegg.gs only include the subset of canonical
+    signaling and metabolic pathways from KEGG pathway database, and
+    kegg.gs.dise is the subset of disease pathways. And it is
+    recommended to do KEGG pathway analysis with either kegg.gs or
+    kegg.gs.dise seperately (rather than combined altogether) for
+    better defined results. Note that kegg.gs and subsets are be
+    defined slightly different in gageData package.
+
+  o In gage vignette, add citation section and an example of including all
+    genes (rather than those selected using essGene function) in top
+    gene set result check using geneData function.
+
+
+version 2.2.0
 
   o More robust p-value summarization using Stouffer's method through
     argument use.stouffer=TRUE. The original p-value summarization,

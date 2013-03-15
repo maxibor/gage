@@ -42,18 +42,18 @@ sigGeneSet <- function(setp, cutoff = 0.1, dualSig = (0:2)[2],
                 width = pdf.size[1], height = pdf.size[2])
             if (sum(sel.greater) > 1) {
                 gs.heatmap(-log10(setp.sig$greater[, -c(1:5)]), 
-                  limit = p.limit, main = "UP test: -log10(p-value)", 
+                  limit = p.limit, main = "GAGE Up-test: -log10(p-value)", 
                   ...)
             }
             else print("No heatmap produced for up-regulated gene sets, only 1 or none signficant.")
             if (sum(sel.less) > 1) {
                 gs.heatmap(-log10(setp.sig$less[, -c(1:5)]), 
-                  limit = p.limit, main = "Down test: -log10(p-value)", 
+                  limit = p.limit, main = "GAGE Down-test: -log10(p-value)", 
                   ...)
             }
             else print("No heatmap produced for down-regulated gene sets, only 1 or none signficant.")
             gs.heatmap(setp.sig$stats[, -1], limit = stat.limit, 
-                main = "Test statistics", ...)
+                main = "GAGE test statistics", ...)
             dev.off()
         }
         else if (heatmap) 
@@ -79,9 +79,9 @@ sigGeneSet <- function(setp, cutoff = 0.1, dualSig = (0:2)[2],
             pdf(paste(outname, ".gs.2d.heatmap.pdf", sep = ""), 
                 width = pdf.size[1], height = pdf.size[2])
             gs.heatmap(-log10(setp.sig$greater[, -c(1:5)]), limit = p.limit, 
-                main = "Two-way test: -log10(p-value)", ...)
+                main = "GAGE Two-way test: -log10(p-value)", ...)
             gs.heatmap(setp.sig$stats[, -1], limit = stat.limit, 
-                main = "Test statistics", ...)
+                main = "GAGE test statistics", ...)
             dev.off()
         }
         else if (heatmap) 

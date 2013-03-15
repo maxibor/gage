@@ -70,11 +70,6 @@ esset.grp <- function(setp, exprs, gsets, ref = NULL,
     IDs = ssname
     names(IDs) = rownames(b)
     b[is.na(b)] <- 0
-    if (!require(graph)) {
-        source("http://bioconductor.org/biocLite.R")
-        biocLite("graph")
-    }
-    
     
     sim.Graph <- as(b, "graphNEL")
     sim.Graph.cc <- connComp(sim.Graph)

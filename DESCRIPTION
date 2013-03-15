@@ -7,7 +7,8 @@ Author: Weijun Luo
 Maintainer: Weijun Luo <luo_weijun@yahoo.com>
 Description: GAGE is a published method for gene set or pathway analysis. GAGE is generally applicable independent of microarray data attributes including sample sizes, experimental designs, microarray platforms, and other types of heterogeneity, and consistently achieves superior performance over other frequently used methods. In gage package, we provide functions for basic GAGE analysis, result processing and presentation. We have also built pipeline routines for of multiple GAGE analyses in a batch, comparison between parallel analyses, and combined analysis of heterogeneous data from different sources/studies. In addition, we provide demo microarray data and commonly used gene set data based on KEGG pathways and GO terms. These funtions and data are also useful for gene set analysis using other methods.
 biocViews: Pathways, GO, DifferentialExpression, Microarray, OneChannel, TwoChannel, RNAseq,  Genetics, MultipleComparisons, GeneSetEnrichment
-Depends: R (>= 2.10), graph, multtest
+Depends: R (>= 2.10)
+Imports: graph
 Suggests: gageData, GO.db, GSEABase, KEGG.db, org.Hs.eg.db
 License: GPL (>=2.0)
 URL: http://www.biomedcentral.com/1471-2105/10/161

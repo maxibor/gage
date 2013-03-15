@@ -53,8 +53,9 @@ gagePrep <- function(exprs, ref = NULL, samp = NULL,
                 ref_mean <- (if (length(ref) > 1) 
                   apply(exprs[, ref], 1, mean, na.rm = TRUE)
                 else exprs[, ref])
+                cn <- colnames(exprs)[samp]
                 exprs <- cbind(exprs[, samp] - ref_mean)
-                colnames(exprs) <- colnames(exprs)[samp]
+                colnames(exprs) <- cn
             }
         }
         else if (length(ref) > 1 & length(samp) > 1) {

@@ -56,11 +56,11 @@ geneData <- function(genes, exprs, ref = NULL, samp = NULL,
             col.cols = rep(col.cols, c(length(ref), length(samp)))
             heatmap2(gData.h, col = cols, scale = "none", symkey = FALSE, 
                 density.info = "none", trace = "none", ColSideColors = col.cols, 
-                ...)
+                keysize = 1, ...)
         }
         else {
             heatmap2(gData.h, col = cols, scale = "none", symkey = FALSE, 
-                density.info = "none", trace = "none", ...)
+                density.info = "none", trace = "none", keysize = 1, ...)
         }
         dev.off()
     }

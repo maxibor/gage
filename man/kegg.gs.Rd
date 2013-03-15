@@ -1,6 +1,7 @@
 \name{kegg.gs}
 \Rdversion{1.1}
 \alias{kegg.gs}
+\alias{kegg.gs.dise}
 \alias{go.gs}
 \alias{carta.gs}
 \docType{data}
@@ -13,13 +14,23 @@
 }
 \usage{
 data(kegg.gs)
+data(kegg.gs.dise)
 data(go.gs)
 data(carta.gs)
 }
 \format{
- kegg.gs is a named list of 205 elements. Each element is a character
+ kegg.gs is a named list of 177 elements. Each element is a character
  vector of member gene Entrez IDs for a single KEGG pathway. Type
- \code{head(kegg.gs, 3)} for the first 3 gene sets or pathways.
+ \code{head(kegg.gs, 3)} for the first 3 gene sets or pathways. Note
+ that kegg.gs has been updated since gage version 2.9.1. From then,
+ kegg.gs only include the subset of canonical signaling and metabolic
+ pathways from KEGG pathway database, and kegg.gs.dise is the subset of
+ disease pathways. And it is recommended to do KEGG pathway analysis with either kegg.gs or kegg.gs.dise
+ seperately (rather than combined altogether) for better defined
+ results. In the near feature, we will also generate subsets of go.gs
+ for refined analysis. Note that kegg.gs in gageData package still keeps
+ all KEGG pathways, where kegg.gs.sigmet and kegg.gs.dise are two subsets of
+ kegg.gs. 
 
  go.gs is a named list of 1000 elements in this package. It is
  a truncated list in this package. The ful list of go.gs has

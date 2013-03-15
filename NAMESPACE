@@ -1,7 +1,6 @@
-import(
-       multtest,
-       graph
-)
+
+importClassesFrom(graph, graphNEL)
+importMethodsFrom(graph, connComp)
 
 export(
 eg2sym, sym2eg,
