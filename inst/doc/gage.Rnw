@@ -341,7 +341,7 @@ pv.out.list <- sapply(path.ids2, function(pid) pathview(gene.data = gse16873.d[,
                 \label{fig:4b}
         \end{subfigure}
         \\
-        \caption{Visualize GAGE pathway analysis results using \Rpackage{pathview} (a) KEGG view or (b) Graphviz view.}
+        \caption{Visualize GAGE pathway analysis results using \Rpackage{pathview} (a) KEGG view of hsa00020 Citrate cycle (TCA cycle) or (b) Graphviz view of hsa04110 Cell cycle.}
         \label{fig:4}
 \end{figure}
 
