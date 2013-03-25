@@ -48,9 +48,9 @@ This package also supplies an example microarray dataset. In GAGE paper \citep{l
 
 The manual is written by assuming the user has minimal R/Bioconductor knowledge. Some descriptions and code chunks cover very basic usage of R. The more experienced users may simply omit these parts. 
 
-\section{Installation}
+\section{Citation}
 The open-source \Rpackage{gage} package implements GAGE method. Please cite the following paper in your publication if you use the software. We appreicate your support of our work.
-
+\\
 Weijun Luo, Michael Friedman, Kerby Shedden, Kurt Hankenson, and Peter Woolf. GAGE: generally applicable gene set enrichment for pathway analysis. BMC Bioinformatics, 2009.
 
 \section{Installation}
