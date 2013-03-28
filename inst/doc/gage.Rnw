@@ -15,7 +15,6 @@
 \usepackage{subcaption}
 \SweaveOpts{keep.source=TRUE,eps=FALSE,pdf=TRUE,prefix=TRUE} 
 
-
 % R part
 \newcommand{\R}[1]{{\textsf{#1}}}
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
