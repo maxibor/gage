@@ -1,3 +1,8 @@
+version 2.9.4
+
+  o add secondary vignette, "Gene set and data preparation", on data
+    preparation.
+
 version 2.9.2
 
   o suggests and connected to pathview package for results visualization.

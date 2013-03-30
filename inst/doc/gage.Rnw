@@ -36,7 +36,7 @@
 \maketitle
 
 \begin{abstract}
-  In this vignette, we demonstrate the \Rpackage{gage} package for gene set or pathway analysis. The \Rpackage{gage} package implement the GAGE method. GAGE is generally applicable independent of microarray data attributes including sample sizes, experimental designs, microarray platforms, and other types of heterogeneity, and consistently achieves superior performance over other frequently used methods. We introduce functions and data for routine and advanced gene set analysis, as well as results presentation and interpretation. We also cover package installation, data preparation and common application errors.
+  In this vignette, we demonstrate the \Rpackage{gage} package for gene set or pathway analysis. The \Rpackage{gage} package implement the GAGE method. GAGE is generally applicable independent of microarray data attributes including sample sizes, experimental designs, microarray platforms, and other types of heterogeneity, and consistently achieves superior performance over other frequently used methods. We introduce functions and data for routine and advanced gene set analysis, as well as results presentation and interpretation. We also cover package installation, data preparation and common application errors. The secondary vignette, "Gene set and data preparation", convers more on data preparation.
 \end{abstract}
 
 \section{Introduction}
@@ -101,7 +101,7 @@ help(gage)
 @ 
 
 \section{Basic Analysis}
-GAGE \citep{luo:etal:2009} is a widely applicable method for gene set or pathway analysis. In such analysis, we check for coordinated differential expression over gene sets instead of changes of individual genes. Gene sets are pre-defined groups of genes, which are functionally related. Commonly used gene sets include those derived from KEGG pathways, Gene Ontology terms, gene groups that share some other functional annotations, including common transcriptional regulators (like transcription factors, small interfering RNA's or siRNA etc), genomic locations etc. Consistent perturbations over such gene sets frequently suggest mechanistic changes. GSA is much more robust and sensitive than individual gene analysis \citep{luo:etal:2009}, especially considering the functional redundancy of individual genes and the noise level of high throughput assay data. GAGE method implemented in this package makes GSA feasible to all microarray studies, irrespecitve of the sample size, experiment design, array platform etc. Let's start with the most basic gene set analysis.
+GAGE \citep{luo:etal:2009} is a widely applicable method for gene set or pathway analysis. In such analysis, we check for coordinated differential expression over gene sets instead of changes of individual genes. Gene sets are pre-defined groups of genes, which are functionally related. Commonly used gene sets include those derived from KEGG pathways, Gene Ontology terms, gene groups that share some other functional annotations, including common transcriptional regulators (like transcription factors, small interfering RNA's or siRNA etc), genomic locations etc. Consistent perturbations over such gene sets frequently suggest mechanistic changes. GSA is much more robust and sensitive than individual gene analysis \citep{luo:etal:2009}, especially considering the functional redundancy of individual genes and the noise level of high throughput assay data. GAGE method implemented in this package makes GSA feasible to all microarray studies, irrespecitve of the sample size, experiment design, array platform etc. Let's start with the most basic gene set analysis. Note that both the demo expression data and gene set data are ready here, if not, please check vignette, "Gene set and data preparation", for data preparation.
 
 We load and look at the demo microarray data first.
 <<dataPrep, echo=TRUE>>=
@@ -117,7 +117,7 @@ print(dcis)
 Check to make sure your gene sets and your expression data are using
 the same ID system (Entrez Gene ID, Gene symbol, or probe set ID
 etc). Entrez Gene IDs are integer numbers, Gene symbols are characters, and
-probe set IDs (Affymetrix GeneChip) are characters with \verb@_at@ suffix.
+probe set IDs (Affymetrix GeneChip) are characters with \verb@_at@ suffix. When gene sets and expression data do use different types of ID, please check vignette, "Gene set and data preparation", for ID conversion solutions.
 
 <<dataPrep, echo=TRUE>>=
 data(kegg.gs)
@@ -419,7 +419,7 @@ We may compare the results from this combined analysis of the combined dataset v
 
 \section{Common Errors}
 \begin{itemize}
-\item Gene sets and expression data use different ID systems (Entrez Gene ID, Gene symbol or probe set ID etc). To correct, use functions like eg2sym or sym2eg, or if you used customized CDF file based on Entrez Gene to processed the raw data, do: \verb@rownames(gse16873)=gsub('_at', '', rownames(gse16873))@.
+\item Gene sets and expression data use different ID systems (Entrez Gene ID, Gene symbol or probe set ID etc). To correct, use functions like eg2sym or sym2eg, or check vignette, "Gene set and data preparation", for more solutions. If you used customized CDF file based on Entrez Gene to processed the raw data, do: \verb@rownames(gse16873)=gsub('_at', '', rownames(gse16873))@.
 \item We use gene set data for a different species than the expression data, e.g. use \verb@kegg.mm@ instead of \verb@kegg.gs@ for human data. When running \verb@gage@ or \verb@gagePipe@ function, we get error message like, \verb@Error in if (is.na(spval[i])) tmp[i] <- NA : argument is of length zero@.
 \item Expression data have multiple probesets (as in Affymetrix GeneChip Data) for a single gene, but gene set analysis requires one entry per gene. You may pick up the most differentially expressed probeset for a gene and discard the rest, or process the raw intensity data using customized probe set definition (CDF file), where probes are re-mapped on a gene by gene base. Check the Methods section of GAGE paper \citep{luo:etal:2009} for details.
 \item Expression data have genes as columns and samples/chips as rows, i.e. in a transposed form. To correct, do: \verb@expdata=t(expdata)@.
