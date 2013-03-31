@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{Gene set and data preparation}
-%\VignetteDepends{pathview, gageData (>= 2.0.0)}
+%\VignetteDepends{pathview, gageData, hgu133a.db}
 %\VignettePackage{gage}
 
 \documentclass[11pt]{article}
