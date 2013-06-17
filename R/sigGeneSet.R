@@ -48,7 +48,7 @@ sigGeneSet <- function(setp, cutoff = 0.1, dualSig = (0:2)[2],
             else print("No heatmap produced for up-regulated gene sets, only 1 or none signficant.")
             if (sum(sel.less) > 1) {
                 gs.heatmap(-log10(setp.sig$less[, -c(1:5)]), 
-                  limit = p.limit, main = "GAGE Down-test: -log10(p-value)", 
+                  limit = p.limit, main = "  GAGE Down-test: -log10(p-value)", 
                   ...)
             }
             else print("No heatmap produced for down-regulated gene sets, only 1 or none signficant.")
