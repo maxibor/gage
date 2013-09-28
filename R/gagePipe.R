@@ -169,7 +169,7 @@ gagePipe <- function(arraydata, dataname = "arraydata",
     }
     rm(gage.p)
     
-    save(list = objects(pat = "[.]p$"), file = paste(dataname, 
+    save(list = objects(pattern = "[.]p$"), file = paste(dataname, 
         ".gage.RData", sep = ""))
     return(invisible(1))
 }

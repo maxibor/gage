@@ -9,7 +9,7 @@ citEntry(entry="article",
   pages = 	 "161",
    textVersion = paste("Luo, W., Friedman, M., Shedden K., Hankenson, K. and Woolf, P GAGE:",
   "Generally Applicable Gene Set Enrichment for Pathways Analysis. BMC",
-  "Bioinformatics 2009, 10:161"))
+  "Bioinformatics, 2009, 10:161"))
 
 citFooter("This free open-source software implements academic research
 by the authors. Its development took a large amount of extra time and

@@ -1,3 +1,11 @@
+version 2.11.3
+
+  o add secondary vignette, "RNA-Seq Data Pathway and Gene-set
+    Analysis Workflows".
+
+  o add function kegg.gsets, which generates up-to-date KEGG pathway
+    gene sets for any specified KEGG species.
+
 version 2.9.4
 
   o add secondary vignette, "Gene set and data preparation", on data
