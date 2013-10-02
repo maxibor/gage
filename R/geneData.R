@@ -96,7 +96,7 @@ geneData <- function(genes, exprs, ref = NULL, samp = NULL,
             if (length(ref) > 1 & length(samp) > 1) {
                 points(gData[, ref[2]], gData[, samp[2]], pch = 24, 
                   col = "red", cex = sc1)
-                legend("topleft", c("Array 1", "Array 2"), pch = c(19, 
+                legend("topleft", c("Sample 1", "Sample 2"), pch = c(19, 
                   24), col = c("black", "red"), bty = "n", pt.cex = sc1)
             }
         }
