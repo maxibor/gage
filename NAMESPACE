@@ -1,5 +1,4 @@
 
-importFrom(pathview, kegg.species.code)
 importClassesFrom(graph, graphNEL)
 importMethodsFrom(graph, connComp)
 import(KEGGREST)

@@ -38,7 +38,7 @@
 
 \section{Introduction}
 \label{sec:intro}
-In this tutorial, we describe the GAGE \citep{luo:etal:2009} /Pahview  \citep{luo:etal:2013} workflows on RNA-Seq data pathway analysis and gene-set analysis. We first cover a full workflow from reads counting, data preprocessing, gene set test, to pathway visualization \hyperref[sec:nativeWorkflow]{Section \ref*{sec:nativeWorkflow}}. It is called the native workflow, because GAGE/Pahview provides most functionality for the high level analysis. The same workflow can be used for GO analysis and other types of gene set (enrichment) analyses \hyperref[sec:go]{Section \ref*{sec:go}}, and can have different choices of input per gene scores \hyperref[sec:genescore]{Section \ref*{sec:genescore}}. GAGE and Pahview are versatile tools. They can take the output from all the major RNA-Seq analysis tools and carry on for pathway analysis or visualization. In \hyperref[sec:joint]{Section \ref*{sec:joint}}, we also describe joint pathway analysis workflows with common RNA-Seq analysis tools. All these workflows are essentially implemented in R/Bioconductor.
+In this tutorial, we describe the GAGE \citep{luo:etal:2009} /Pahview  \citep{luo:etal:2013} workflows on RNA-Seq data pathway analysis and gene-set analysis (or GSEA). We first cover a full workflow from reads counting, data preprocessing, gene set test, to pathway visualization \hyperref[sec:nativeWorkflow]{Section \ref*{sec:nativeWorkflow}}. It is called the native workflow, because GAGE/Pahview provides most functionality for the high level analysis. The same workflow can be used for GO analysis and other types of gene set (enrichment) analyses \hyperref[sec:go]{Section \ref*{sec:go}}, and can have different choices of input per gene scores \hyperref[sec:genescore]{Section \ref*{sec:genescore}}. GAGE and Pahview are versatile tools. They can take the output from all the major RNA-Seq analysis tools and carry on for pathway analysis or visualization. In \hyperref[sec:joint]{Section \ref*{sec:joint}}, we also describe joint pathway analysis workflows with common RNA-Seq analysis tools. All these workflows are essentially implemented in R/Bioconductor.
 
 The workflows cover the most common situations and issues for RNA-Seq data pathway analysis. Issues like data quality assessment are relevant for data analysis in general yet out the scope of this tutorial. Although we focus on RNA-Seq data here, but pathway analysis workflow remains similar for microarray, particularly step \hyperref[subsec:step3]{3}-\hyperref[subsec:step4]{4} would be the same. Please check \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/gage.pdf}{\Rpackage{gage}} and \href{http://bioconductor.org/packages/devel/bioc/vignettes/pathview/inst/doc/pathview.pdf}{\Rpackage{pathview}} vigenttes for details.
 
@@ -99,7 +99,10 @@ cnts.d= cnts.norm[, samp.idx]-rowMeans(cnts.norm[, ref.idx])
 sel <- cnts.kegg.p$greater[, "q.val"] < 0.1 &
          !is.na(cnts.kegg.p$greater[,"q.val"])
 path.ids <- rownames(cnts.kegg.p$greater)[sel]
-path.ids2 <- substr(path.ids, 1, 8)
+sel.l <- cnts.kegg.p$less[, "q.val"] < 0.1 &
+           !is.na(cnts.kegg.p$less[,"q.val"])
+path.ids.l <- rownames(cnts.kegg.p$less)[sel.l]
+path.ids2 <- substr(c(path.ids, path.ids.l), 1, 8)
 library(pathview)
 pv.out.list <- sapply(path.ids2, function(pid) pathview(
                       gene.data = cnts.d, pathway.id = pid,
@@ -128,7 +131,7 @@ ln -s tophat_out_1/accepted_hits.bam tophat_all/ERR127302.bam
 ln -s tophat_out_1/accepted_hits.bam.bai tophat_all/ERR127302.bam.bai
 \end{verbatim}
 
-The pathway analysis workflow is implemented all in R/Bioconductor. You need to install the relevant packages within R if you haven't done so, you will need to work with \textbf{R 3.0 and Bioconductor 2.13 or newer versions}. Note that \Rpackage{gageData} provides the demo RNA-Seq data and ready-to-use KEGG and GO gene set data. The installation may take a few minutes. From this  point on, we are working fully under R excpet noted otherwise. Of coiurse, you need to start R first. 
+The pathway analysis workflow is implemented all in R/Bioconductor. You need to install the relevant packages within R if you haven't done so, you will need to work with \textbf{R 3.0 and Bioconductor 2.13 or newer versions}. Note that \Rpackage{gageData} provides the demo RNA-Seq data and ready-to-use KEGG and GO gene set data. The installation may take a few minutes. From this  point on, we are working fully under R excpet noted otherwise. Of course, you need to start R first. 
 
 <<start, echo=FALSE>>=
 options(width=80)
@@ -209,7 +212,7 @@ dev.off()
 
 \subsection{Step 3: Gene set test with GAGE}
 \label{subsec:step3}
-Here, we do gene set test to select the signficantly perturbed KEGG pathways using GAGE \citep{luo:etal:2009}. For more information on GAGE analysis please check the \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/gage.pdf}{main \Rpackage{gage} vignette} and the paper  \citep{luo:etal:2009}. You may also explore advanced GAGE analysis options and view the gene-level perturbations using heatmaps or scatter plot (\hyperref[fig:3]{Figure \ref*{fig:3}}) or pathway-level perturbations using heatmaps (Figure 1 in the \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/gage.pdf}{main vignette}).
+Here, we do gene set test to select the signficantly perturbed KEGG pathways using GAGE \citep{luo:etal:2009}. For more information on GAGE analysis please check the \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/gage.pdf}{main \Rpackage{gage} vignette} and the paper  \citep{luo:etal:2009}. You may also explore advanced GAGE analysis options and view the gene-level perturbations using heatmaps or scatter plot (\hyperref[fig:3]{Figure \ref*{fig:3}}) or pathway-level perturbations using heatmaps (Figure 1 in the \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/gage.pdf}{main vignette}). Below we only do one directional tests, but you may also consider two directional tests as described in the \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/gage.pdf}{main \Rpackage{gage} vignette}.
 <<gage, echo=TRUE>>=
 library(gage)
 ref.idx=5:8
@@ -374,8 +377,12 @@ fc.kegg.p <- gage(exp.fc, gsets = kegg.gs, ref = NULL, samp = NULL)
 sel <- fc.kegg.p$greater[, "q.val"] < 0.1 &
         !is.na(fc.kegg.p$greater[, "q.val"])
 path.ids <- rownames(fc.kegg.p$greater)[sel]
-path.ids2 <- substr(path.ids, 1, 8)
+sel.l <- fc.kegg.p$less[, "q.val"] < 0.1 &
+           !is.na(fc.kegg.p$less[,"q.val"])
+path.ids.l <- rownames(fc.kegg.p$less)[sel.l]
+path.ids2 <- substr(c(path.ids, path.ids.l), 1, 8)
 require(pathview)
+#view first 3 pathways as demo
 pv.out.list <- sapply(path.ids2[1:3], function(pid) pathview(
                       gene.data =  exp.fc, pathway.id = pid,
                       species = "hsa", out.suffix=out.suffix))

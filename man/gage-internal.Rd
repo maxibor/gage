@@ -10,6 +10,7 @@
 \alias{vennDiagram2}
 \alias{deComp}
 \alias{rownorm}
+\alias{kegg.species.code}
 
 \title{Internal functions}
 \description{
@@ -25,6 +26,8 @@
 
   Function vennDiagram2 is a revised form of function vennDiagram from package limma. Associated
   function vennCounts is identical to the version in limma.
+
+  Function kegg.species.code is identical to the version in pathview.
 
   Functions deComp and rownorm were written by Weijun Luo, the author of
   gage package.
