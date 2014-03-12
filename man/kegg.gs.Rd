@@ -51,7 +51,7 @@ data(carta.gs)
  KEGG BRITE Database. This data is used by kegg.gsets function to subset
  the KEGG pathways for more specific pathway analysis.
 
-  korg is a character matrix of 2299 rows and 6 columns. First 3 columns
+  korg is a character matrix of ~3000 rows and 6 columns. First 3 columns
   are KEGG species code, scientific name and common name, followed
   columns on gene ID types used for each species: entrez.gnodes ("1" or
   "0", whether EntrezGene is the default gene ID) and representative

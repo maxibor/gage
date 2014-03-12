@@ -1,3 +1,18 @@
+version	2.13.3
+-------------
+
+  o updated korg to included over 600 newly added species. kegg.gsets
+    can work with 2970 species now.
+
+  o fixed typos in joint workflows with Cufflinks (page 13):
+    range(exp.fc) to range(cuff.fc)
+
+version	2.12.2
+-------------
+
+  o fixed typos in joint workflows with DESeq2 (page 11): cnts.kegg.p
+    should be fc.kegg.p
+
 version 2.12.1
 
   o remove pathview from the imports list for easier installation and

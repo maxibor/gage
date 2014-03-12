@@ -477,7 +477,7 @@ gnames.eg=pathview::id2eg(gnames, category ="symbol")
 sel2=gnames.eg[,2]>""
 cuff.fc=cuff.fc[sel2]
 names(cuff.fc)=gnames.eg[sel2,2]
-range(exp.fc)
+range(cuff.fc)
 cuff.fc[cuff.fc>10]=10
 cuff.fc[cuff.fc< -10]=-10
 exp.fc=cuff.fc
