@@ -13,7 +13,7 @@ gagePipe,
 geneData,
 gs.tTest, gs.zTest, gs.KSTest,
 heter.gage, pairData,
-kegg.gsets,
+go.gsets, kegg.gsets,
 readExpData,
 readList,
 sigGeneSet

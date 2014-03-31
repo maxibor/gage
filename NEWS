@@ -1,4 +1,11 @@
-version	2.13.3
+version	2.13.5
+-------------
+
+  o add function go.gsets, which generates up-to-date GO gene sets for
+    19 common species annotated in Bioconductor and more others by the
+    users.
+
+version	2.13.3 (2.12.3)
 -------------
 
   o updated korg to included over 600 newly added species. kegg.gsets

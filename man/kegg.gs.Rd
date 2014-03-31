@@ -6,6 +6,7 @@
 \alias{carta.gs}
 \alias{khier}
 \alias{korg}
+\alias{bods}
 \docType{data}
 \title{
   Common gene set data collections
@@ -58,6 +59,10 @@ data(carta.gs)
   KEGG gene ID and EntrezGene ID. This data comes from pathview package,
   and is used by kegg.gsets function internally.
   
+  bods is a character matrix of 19 rows and 4 columns on the mapping
+  between gene annotation package names in Bioconductor, common name and
+  KEGG code of most common research species. This data comes from
+  pathview package, and is used by go.gsets function internally.
 }
 \details{
 These gene set data were compiled using Entrez Gene IDs, gene set names

@@ -20,7 +20,7 @@ kegg.gsets(species = "hsa", id.type = "kegg")
   }
   \item{id.type}{
     character, desired ID type for the get sets, case insensitive. Default
-    gene.idtype="kegg", i.e. the primary KEGG gene ID. The other valid
+    idtype="kegg", i.e. the primary KEGG gene ID. The other valid
     option is "entrez", i.e. Entrez Gene. Entrez Gene is the primary KEGG gene ID
     for many common model organisms, like human, mouse, rat etc, hence these
     two options have the same effect. For other species, primary KEGG gene
@@ -31,6 +31,10 @@ kegg.gsets(species = "hsa", id.type = "kegg")
   The latest KEGG pathway gene sets are derived by connecting to the
   database in real time. This way, we can create high quality gene set
   data for pathway analysis for over 2400 KEGG species.
+  
+  Note that we have generated GO gene set for 4 species, human, mouse,
+  rat, yeast as well as KEGG Ortholog, and provided the data in package
+  gageData.
 }
 \value{
   A named list with the following elements:
