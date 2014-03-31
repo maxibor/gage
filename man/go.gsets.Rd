@@ -16,6 +16,15 @@ go.gsets(species = "human", pkg.name=NULL, id.type = "go")
     name is not used here. Default species="human". For a list of other
     species names, type in: {data(bods); bods}
   }
+  \item{pkg.name}{
+    character, the gene annotation package name for the target
+    species. It is either one of the Bioconductor OrgDb packages or a
+    user supplied package with similar data structures created using
+    AnnotationForge package. Default species=NULL, the right annotation
+    package will be located for the specified speices in Bioconductor
+    automatically. Otherwise, the user need to prepare and supply a
+    usable annotation package in the same format.
+  }
   \item{id.type}{
     character, target ID type for the get sets, case insensitive. Default
     gene.idtype="eg", i.e. Entrez Gene. Entrez Gene is the primary GO gene ID
