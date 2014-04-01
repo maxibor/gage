@@ -71,10 +71,10 @@ gse16873.cc.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$CC],
 A new secondary vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrates applications of GAGE/Pathview workflows in RNA-Seq data analysis.
 \\
 \\
-A new function, \Rfunction{kegg.gsets}, has been introduced in the package. You may use it to compile pathway gene set data any time needed for one of the 3000 KEGG species and  KEGG Orthology (with species="ko"). In addition, you get the most updated pathway gene set data as it is retrieved from KEGG in real time. Please check the help info on the function for details.
+A new function, \Rfunction{kegg.gsets}, has been introduced in the package. You may use it to compile pathway gene set data any time needed for one of the 3000 KEGG species and  KEGG Orthology (with species="ko"). In addition, you get the most updated pathway gene set data as it is retrieved from KEGG in real time. Please check the \hyperref[code:kegg.gsets]{Section Basic Analysis} and the help info on the function for details.
 \\
 \\
-Another new function, \Rfunction{go.gsets}, has been introduced in the package. You may use it to compile GO (Gene Ontology) gene set data any time needed for 19 common species annotated in Bioconductor and more others by the users. Please check the help info on the function for details.
+Another new function, \Rfunction{go.gsets}, has been introduced in the package. You may use it to compile GO (Gene Ontology) gene set data any time needed for 19 common species annotated in Bioconductor and more others by the users. Please check the \hyperref[code:go.gsets]{Section Basic Analysis} and the help info on the function for details.
 
 \section{Introduction}
 Gene set analysis (GSA) is a powerful strategy to infer functional and mechanistic changes from high through microarray or sequencing data. GSA focuses on sets of related genes and has established major advantages over per-gene based different expression analyses, including greater robustness, sensitivity and biological relevance.  However, classical GSA methods only have limited usage to a small number of microarray or RNA-Seq studies as they cannot handle datasets of different sample sizes, experimental designs and other types of heterogeneity \citep{luo:etal:2009}. To address these limitations, we present a new GSA method called Generally Applicable Gene-set Enrichment (GAGE) \citep{luo:etal:2009}. We have validated GAGE method extensively against the most widely used GSA methods in both applicability and performance \citep{luo:etal:2009}. In this manual, we focus on the implementation and usage of the R package, \Rpackage{gage}.
@@ -165,20 +165,33 @@ head(rownames(gse16873))
 
 We normally do GAGE analysis using gene sets derived from on KEGG pathways or GO term groups. Here we use the human gene set data coming with this package with the human microarray dataset GSE16873. Note that \verb@kegg.gs@ has been updated since gage version 2.9.1. From then, \verb@kegg.gs@ only include the subset of canonical signaling and metabolic pathways from KEGG pathway database, and \verb@kegg.gs.dise@ is the subset of disease pathways. And it is recommended to do KEGG pathway analysis with either \verb@kegg.gs@ or \verb@kegg.gs.dise@ seperately (rather than combined altogether) for better defined results. \verb@go.gs@ derived from human GO database only includes 1000 gene sets due to size limit. For full \verb@go.gs@ or gene sets data for other species, we may always use the \Rpackage{gageData} package. If you don't find the gene set data for your target species, you may use \Rfunction{kegg.gsets} or \Rfunction{go.gsets} to compile pathway gene set data any time needed as long as it is one of the 3000 KEGG species or a species with gene annotation package supplied in Bioconductor or the user. You may want to save the new gene set data for later use. An another advantage of using \Rfunction{kegg.gsets} is that you get the most updated pathway gene set data as it is retrieved from KEGG in real time.
 
+\phantomsection
+\label{code:kegg.gsets}
 <<kegg.gsets, echo=TRUE>>=
 kg.hsa=kegg.gsets("hsa")
 kegg.gs=kg.hsa$kg.sets[kg.hsa$sigmet.idx]
-#save(kegg.gs, file="kegg.sigmet.gsets.RData")
+#save(kegg.gs, file="kegg.hsa.sigmet.gsets.RData")
 @
+<<korg, echo=TRUE>>=
+#kegg.gsets works with 3000 KEGG species,for examples:
+data(korg)
+head(korg[,1:3])
+@ 
 
-
+\phantomsection
+\label{code:go.gsets}
 <<go.gsets, echo=TRUE>>=
 go.hs=go.gsets(species="human")
 go.bp=go.hs$go.sets[go.hs$go.subs$BP]
 go.mf=go.hs$go.sets[go.hs$go.subs$MF]
 go.cc=go.hs$go.sets[go.hs$go.subs$CC]
-#save(go.bp, go.mf, go.cc, file="go.gsets.RData")
+#save(go.bp, go.mf, go.cc, file="go.hs.gsets.RData")
 @
+<<bods, echo=TRUE>>=
+#for Bioconductor species supported by go.gsets function:
+data(bods)
+print(bods)
+@ 
 
 Here we look at the expression changes towards one direction (either up- or down- regulation) in the gene sets. The results of such 1-directional analysis is a list of two matrices, corresponding to the two directions. Each result matrix contains multiple columns of test statistics and p-/q-values for all tested gene sets. Among them, p.val is the global p-value and q.val is the corresponding FDR q-value. Gene sets are ranked by significance. Type \verb@?gage@ for more information.
 
