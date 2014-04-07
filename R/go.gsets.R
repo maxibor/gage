@@ -2,7 +2,7 @@ go.gsets <-  function (species = "human", pkg.name = NULL, id.type="eg")
   {
     if (is.null(pkg.name)){
       species=tolower(species)
-      data(bods)
+      data(bods, package="gage")
       bods[,"species"]=tolower(bods[,"species"])
       idx=which(bods[,"species"] == species)
       if(length(idx)!=1) stop("bad species value")

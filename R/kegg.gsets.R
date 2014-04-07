@@ -19,7 +19,7 @@ kegg.gsets<-function(species="hsa", id.type="kegg"){
   paths=gsub(paste("path:",species,sep=""), "", path.list)
   kg.sets=split(genes, paths)
 
-  data(khier)
+  data(khier, package="gage")
   kh.idx=match(names(kg.sets), substr(khier[,3], 1,5))
   kg.sets=kg.sets[!is.na(kh.idx)]
   kh.idx=kh.idx[!is.na(kh.idx)]
