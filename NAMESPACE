@@ -1,4 +1,5 @@
 
+importFrom(AnnotationDbi, as.list, get, mget)
 importClassesFrom(graph, graphNEL)
 importMethodsFrom(graph, connComp)
 import(KEGGREST)

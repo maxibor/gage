@@ -8,7 +8,7 @@
   either Bioconductor or user supplied gene annotation package.
 }
 \usage{
-go.gsets(species = "human", pkg.name=NULL, id.type = "go")
+go.gsets(species = "human", pkg.name=NULL, id.type = "eg")
 }
 \arguments{
   \item{species}{
