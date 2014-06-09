@@ -1,3 +1,10 @@
+version	2.14.1
+-------------
+
+  o revised "RNA-Seq Data Pathway and Gene-set Analysis Workflows" to
+    reflect summarizeOverlaps() migration to GenomicAlignments package
+    for Bioc 2.14.
+
 version	2.13.5
 -------------
 

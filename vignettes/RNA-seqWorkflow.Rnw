@@ -50,7 +50,11 @@ This is the concise version, please check the full version workflow below for de
 <<synopsis0, echo=TRUE,  eval=FALSE>>=
 ##step 0: setup (also need to map the reads outside R)
 source("http://bioconductor.org/biocLite.R")
+#for BioC <2.14
 biocLite(c("pathview", "gage", "gageData", "Rsamtools",
+            "TxDb.Hsapiens.UCSC.hg19.knownGene"))
+#for BioC >=2.14
+biocLite(c("pathview", "gage", "gageData", "GenomicAlignments",
             "TxDb.Hsapiens.UCSC.hg19.knownGene"))
 @ 
 
@@ -58,7 +62,10 @@ biocLite(c("pathview", "gage", "gageData", "Rsamtools",
 ##step 1: read counts
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 exByGn <- exonsBy(TxDb.Hsapiens.UCSC.hg19.knownGene, "gene")
+#for BioC <2.14
 library(Rsamtools)
+#for BioC >=2.14
+library(GenomicAlignments)
 fls <- list.files("tophat_all/", pattern="bam$", full.names =T)
 bamfls <- BamFileList(fls)
 flag <- scanBamFlag(isNotPrimaryRead=FALSE, isProperPair=TRUE)
@@ -139,7 +146,11 @@ options(width=80)
 
 <<install, echo=TRUE, eval=FALSE>>=
 source("http://bioconductor.org/biocLite.R")
+#for BioC <2.14
 biocLite(c("pathview", "gage", "gageData", "Rsamtools",
+            "TxDb.Hsapiens.UCSC.hg19.knownGene"))
+#for BioC >=2.14
+biocLite(c("pathview", "gage", "gageData", "GenomicAlignments",
             "TxDb.Hsapiens.UCSC.hg19.knownGene"))
 @ 
 
@@ -154,8 +165,10 @@ In this step, we need to extract exon regions by gene (i.e. Annotation of known 
 <<readcount, echo=TRUE, eval=FALSE>>=
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 exByGn <- exonsBy(TxDb.Hsapiens.UCSC.hg19.knownGene, "gene")
-
+#for BioC <2.14
 library(Rsamtools)
+#for BioC >=2.14
+library(GenomicAlignments)
 fls <- list.files("tophat_all/", pattern="bam$", full.names =T)
 bamfls <- BamFileList(fls)
 flag <- scanBamFlag(isNotPrimaryRead=FALSE, isProperPair=TRUE)
