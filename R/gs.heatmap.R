@@ -1,4 +1,4 @@
-gs.heatmap <- function(gs.data, limit = NULL, cols = NULL, 
+gs.heatmap <- function(gs.data, limit = NULL, cols = NULL, margins = c(6, 10),
     ...) {
     
     ds = dim(gs.data)
@@ -27,7 +27,7 @@ gs.heatmap <- function(gs.data, limit = NULL, cols = NULL,
     
     heatmap2(gs.data, Colv = F, Rowv = F, dendrogram = "none", 
         col = cols, scale = "none", symkey = FALSE, density.info = "none", 
-        trace = "none", margins = c(6, 10), keysize = 1, ...)
+        trace = "none", margins = margins, keysize = 1, ...)
     
     return(invisible(1))
 } 

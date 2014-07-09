@@ -1,3 +1,9 @@
+version	2.14.3
+-------------
+
+  o revised the internal function gs.heatmap as to allow margin sizes
+    ajustment for gene set heatmaps directly or through sigGeneSet.
+
 version	2.14.1
 -------------
 
