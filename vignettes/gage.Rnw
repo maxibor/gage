@@ -9,6 +9,7 @@
 \usepackage{hyperref}
 \usepackage{geometry}
 \usepackage{longtable}
+\usepackage[cm]{fullpage}
 \usepackage[pdftex]{graphicx}
 \usepackage[authoryear,round]{natbib}
 \usepackage{caption}
@@ -31,7 +32,7 @@
 \begin{document}
 \setkeys{Gin}{width=0.8\textwidth}
 \title{Generally Applicable Gene-set/Pathway Analysis}
-\author{Weijun Luo}
+\author{Weijun Luo {\small(\href{mailto:luo\_weijun@yahoo.com}{luo\_weijun AT yahoo.com})}}
 
 \maketitle
 
@@ -39,10 +40,13 @@
   In this vignette, we demonstrate the \Rpackage{gage} package for gene set (enrichment or GSEA) or pathway analysis. The \Rpackage{gage} package implement the GAGE method. GAGE is generally applicable independent of microarray and RNA-Seq data attributes including sample sizes, experimental designs, assay platforms, and other types of heterogeneity, and consistently achieves superior performance over other frequently used methods. We introduce functions and data for routine and advanced gene set (enrichment) analysis, as well as results presentation and interpretation. We also cover package installation, data preparation and common application errors. Two secondary vignettes, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"} and \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrate more applications and usages of GAGE.
 \end{abstract}
 
+\section{Cite our work}
+
+Weijun Luo, Michael Friedman, Kerby Shedden, Kurt Hankenson, and Peter Woolf. GAGE: generally applicable gene set enrichment for pathway analysis. BMC Bioinformatics, 2009. \href{http://www.biomedcentral.com/1471-2105/10/161}{doi:10.1186/1471-2105-10-161}.
+
 \section{Quick start with demo data}
 \label{sec:quick}
-This is the most basic use of \Rpackage{gage}, please check the full description below for more information. Here we assume that the gene sets and input data are ready as in the demo examples. If you are not sure how to do so, you may check the secondary vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}.
-
+This is the most basic use of \Rpackage{gage}, please check the full description below for more information. 
 <<synopsis1, echo=TRUE,  eval=FALSE>>=
 library(gage)
 data(gse16873)
@@ -68,13 +72,13 @@ gse16873.cc.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$CC],
 
 \section{New features}
 \label{sec:news}
-A new secondary vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrates applications of GAGE/Pathview workflows in RNA-Seq data analysis.
+\Rpackage{gage} ($\ge2.11.3$): A new secondary vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrates applications of GAGE/Pathview workflows in RNA-Seq data analysis.
 \\
 \\
-A new function, \Rfunction{kegg.gsets}, has been introduced in the package. You may use it to compile pathway gene set data any time needed for one of the 3000 KEGG species and  KEGG Orthology (with species="ko"). In addition, you get the most updated pathway gene set data as it is retrieved from KEGG in real time. Please check the \hyperref[code:kegg.gsets]{Section Basic Analysis} and the help info on the function for details.
+\Rpackage{gage} ($\ge2.11.3$): A new function, \Rfunction{kegg.gsets}, has been introduced in the package. You may use it to compile pathway gene set data any time needed for one of the 3000 KEGG species and  KEGG Orthology (with species="ko"). In addition, you get the most updated pathway gene set data as it is retrieved from KEGG in real time. Please check the \hyperref[code:kegg.gsets]{Section Basic Analysis} and the help info on the function for details.
 \\
 \\
-Another new function, \Rfunction{go.gsets}, has been introduced in the package. You may use it to compile GO (Gene Ontology) gene set data any time needed for 19 common species annotated in Bioconductor and more others by the users. Please check the \hyperref[code:go.gsets]{Section Basic Analysis} and the help info on the function for details.
+\Rpackage{gage} ($\ge2.13.5$): Another new function, \Rfunction{go.gsets}, has been introduced in the package. You may use it to compile GO (Gene Ontology) gene set data any time needed for 19 common species annotated in Bioconductor and more others by the users. Please check the \hyperref[code:go.gsets]{Section Basic Analysis} and the help info on the function for details.
 
 \section{Introduction}
 Gene set analysis (GSA) is a powerful strategy to infer functional and mechanistic changes from high through microarray or sequencing data. GSA focuses on sets of related genes and has established major advantages over per-gene based different expression analyses, including greater robustness, sensitivity and biological relevance.  However, classical GSA methods only have limited usage to a small number of microarray or RNA-Seq studies as they cannot handle datasets of different sample sizes, experimental designs and other types of heterogeneity \citep{luo:etal:2009}. To address these limitations, we present a new GSA method called Generally Applicable Gene-set Enrichment (GAGE) \citep{luo:etal:2009}. We have validated GAGE method extensively against the most widely used GSA methods in both applicability and performance \citep{luo:etal:2009}. In this manual, we focus on the implementation and usage of the R package, \Rpackage{gage}.
@@ -84,12 +88,6 @@ In \Rpackage{gage} package, we provide a series of functions for basic GAGE anal
 This package also supplies an example microarray dataset. In GAGE paper \citep{luo:etal:2009} and the old versions of \Rpackage{gage} package, we used a BMP6 microarray experiment as the demo data. Here we choose to use another published microarray dataset from GEO, GSE16873 \citep{emery:etal:2009}, as our primary demo data, as to show more and advanced functionality and applications of GAGE with this update package. GSE16873 is a breast cancer study \citep{emery:etal:2009}, which covers twelve patient cases, each with HN (histologically normal), ADH (ductal hyperplasia), and DCIS (ductal carcinoma in situ) RMA samples. Hence, there are 12*3=36 microarray hybridizations or samples interesting to us plus 4 others less interesting in this full dataset. Due to the size limit of this package, we split this GSE16873 into two halves, each including 6 patients with their HN and DCIS but not ADH tissue types. Raw data for these two halves were processed using two different methods, FARMS \citep{hochreiter:etal:2006} and RMA \citep{iriz:etal:2003}, respectively to generate the non-biological data heterogeneity. This \Rpackage{gage} package, we only include the first half dataset for 6 patients (processed using FARMS). The second half dataset plus the full dataset (including all HN, ADH and DCIS samples of all 12 patients, processed together using FARMS) and the original BMP6 dataset is supplied with a data package, \Rpackage{gageData}. Most of our demo analyses will be done on the first half dataset, except for the advanced analysis where we use both halves datasets with all 12 patients. While the \Rpackage{gage} package provides \Rfunction{kegg.gsets} and \Rfunction{go.gsets} to generate updated KEGG pathway and GO (Gene Ontology) gene set in real time, it also includes useful human gene set data derived from KEGG pathway and GO databases. We also supply extra gene set data for other species including mouse, rat and yeast in the data package, \Rpackage{gageData}, available from the \href{http://bioconductor.org/packages/release/data/experiment/}{bioconductor website}. In addition, the users may derive other own gene sets using the \Rfunction{kegg.gsets} and \Rfunction{go.gsets} functions.
 
 The manual is written by assuming the user has minimal R/Bioconductor knowledge. Some descriptions and code chunks cover very basic usage of R. The more experienced users may simply omit these parts. 
-
-\section{Citation}
-The open-source \Rpackage{gage} package implements GAGE method. Please cite the following paper in your publication if you use the software. We appreicate your support of our work.
-\\
-
-Weijun Luo, Michael Friedman, Kerby Shedden, Kurt Hankenson, and Peter Woolf. GAGE: generally applicable gene set enrichment for pathway analysis. BMC Bioinformatics, 2009.
 
 \section{Installation}
 Assume R has been correctly installed and accessible under current directory. Otherwise, please contact your system admin or follow the instructions on \href{http://www.r-project.org/}{R website}.
