@@ -32,7 +32,7 @@
 \begin{document}
 \setkeys{Gin}{width=0.8\textwidth}
 \title{RNA-Seq Data Pathway and Gene-set Analysis Workflows}
-\author{Weijun Luo}
+\author{Weijun Luo {\small(\href{mailto:luo\_weijun@yahoo.com}{luo\_weijun AT yahoo.com})}}
 
 \maketitle
 
@@ -42,6 +42,13 @@ In this tutorial, we describe the GAGE \citep{luo:etal:2009} /Pahview  \citep{lu
 
 The workflows cover the most common situations and issues for RNA-Seq data pathway analysis. Issues like data quality assessment are relevant for data analysis in general yet out the scope of this tutorial. Although we focus on RNA-Seq data here, but pathway analysis workflow remains similar for microarray, particularly step \hyperref[subsec:step3]{3}-\hyperref[subsec:step4]{4} would be the same. Please check \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/gage.pdf}{\Rpackage{gage}} and \href{http://bioconductor.org/packages/devel/bioc/vignettes/pathview/inst/doc/pathview.pdf}{\Rpackage{pathview}} vigenttes for details.
 
+
+\section{Cite our work}
+
+Weijun Luo, Michael Friedman, Kerby Shedden, Kurt Hankenson, and Peter Woolf. GAGE: generally applicable gene set enrichment for pathway analysis. BMC Bioinformatics, 2009. \href{http://www.biomedcentral.com/1471-2105/10/161}{doi:10.1186/1471-2105-10-161}.
+\\
+\\
+Weijun Luo and Cory Brouwer. Pathview: an R/Bioconductor package for pathway-based data integration and visualization. Bioinformatics, 29(14):1830-1831, 2013. \href{http://bioinformatics.oxfordjournals.org/content/29/14/1830.full}{doi: 10.1093/bioinformatics/btt285}.
 
 \section{Quick start: RNA-Seq pathway analysis in about 40 lines}
 \label{sec:quick}

@@ -30,7 +30,7 @@
 \begin{document}
 \setkeys{Gin}{width=0.8\textwidth}
 \title{Gene set and data preparation}
-\author{Weijun Luo}
+\author{Weijun Luo {\small(\href{mailto:luo\_weijun@yahoo.com}{luo\_weijun AT yahoo.com})}}
 
 \maketitle
 
