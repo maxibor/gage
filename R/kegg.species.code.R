@@ -4,6 +4,8 @@ function(species="hsa", na.rm=FALSE, code.only=TRUE){
       if(!exists("korg")) data(korg, package="gage")
 #      data(korg, package="gage")
       ridx=match(species, korg[,1:3]) %% nrow(korg)
+      i0=which(ridx==0)
+      if(length(i0)>0) ridx[i0]=nrow(korg)
       nai=is.na(ridx)
       if(sum(nai)>0) {
         na.msg=sprintf("Unknown species '%s'!", paste(species[nai], sep="", collapse="', '"))

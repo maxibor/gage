@@ -75,7 +75,7 @@ library(Rsamtools)
 library(GenomicAlignments)
 fls <- list.files("tophat_all/", pattern="bam$", full.names =T)
 bamfls <- BamFileList(fls)
-flag <- scanBamFlag(isSecondaryAlignment=FALSE, isProperPair=TRUE)
+flag <- scanBamFlag(isNotPrimaryRead=FALSE, isProperPair=TRUE)
 param <- ScanBamParam(flag=flag)
 gnCnt <- summarizeOverlaps(exByGn, bamfls, mode="Union",
              ignore.strand=TRUE, single.end=FALSE, param=param)
@@ -178,7 +178,7 @@ library(Rsamtools)
 library(GenomicAlignments)
 fls <- list.files("tophat_all/", pattern="bam$", full.names =T)
 bamfls <- BamFileList(fls)
-flag <- scanBamFlag(isSecondaryAlignment=FALSE, isProperPair=TRUE)
+flag <- scanBamFlag(isNotPrimaryRead=FALSE, isProperPair=TRUE)
 param <- ScanBamParam(flag=flag)
 gnCnt <- summarizeOverlaps(exByGn, bamfls, mode="Union",
              ignore.strand=TRUE, single.end=FALSE, param=param)
@@ -361,7 +361,7 @@ cnts.meanfc.kegg.p <- gage(cnts.meanfc, gsets = kegg.gs, ref = NULL, samp = NULL
 
 \section{Joint workflows with common RNA-Seq analysis tools}
 \label{sec:joint}
-Currently, the most common RNA-Seq data analysis tools include \Rpackage{DESeq}  \citep{anders:etal:2010} (and \Rpackage{DESeq2}), \Rpackage{edgeR} \citep{robinson:etal:2010}, \Rpackage{Limma} \citep{smyth:2004} and \Metas{Cufflinks} \citep{trapnell:etal:2012}. Many users are already familiar with them, and countless analyses have been done and published using them. All these tools except \Metas{Cufflinks} are implemented in R/Bioconductor. It is very convenient to combine these tools with GAGE/Pahview for joint pathway analysis workflows. In other words, these tools do differential expression analysis first, and GAGE/Pahview then takes their results for pathway or gene set analysis. Compared to the native workflow in \hyperref[sec:nativeWorkflow]{Section \ref*{sec:nativeWorkflow}} above, these tools essentially make a detour starting in step 2 and ending at step 3 (replacing the internal data preparation of GAGE). Other steps, i.e. preparation and step 1 and 4 largely remain the same. Below are example workflows with each one of these analysis tools.
+Currently, the most common RNA-Seq data analysis tools include \Rpackage{DESeq}  \citep{anders:etal:2010}, \Rpackage{DESeq2} \citep{love:etal:2014}, \Rpackage{edgeR} \citep{robinson:etal:2010}, \Rpackage{Limma} \citep{smyth:2004} and \Metas{Cufflinks} \citep{trapnell:etal:2012}. Many users are already familiar with them, and countless analyses have been done and published using them. All these tools except \Metas{Cufflinks} are implemented in R/Bioconductor. It is very convenient to combine these tools with GAGE/Pahview for joint pathway analysis workflows. In other words, these tools do differential expression analysis first, and GAGE/Pahview then takes their results for pathway or gene set analysis. Compared to the native workflow in \hyperref[sec:nativeWorkflow]{Section \ref*{sec:nativeWorkflow}} above, these tools essentially make a detour starting in step 2 and ending at step 3 (replacing the internal data preparation of GAGE). Other steps, i.e. preparation and step 1 and 4 largely remain the same. Below are example workflows with each one of these analysis tools.
 
 Notice the all of these tools output fold change (log ratio). Some of them, including \Rpackage{Limma} and \Metas{Cufflinks}, also output test-statistics. Below we will use fold changes for all workflows. But test-statistics can still be used, particularly for well designed experiments with sufficient sample size. We will show a complete pathway analysis workflow with \Rpackage{DESeq2}. For all other tools, our demos only include the upstream different expression analysis with fold change results, because the downstream GAGE/Pathview steps remain the same.
 
