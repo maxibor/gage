@@ -16,7 +16,7 @@ geneData <- function(genes, exprs, ref = NULL, samp = NULL,
         print("The number of genes found in exprs is 0 or 1, no need to proceed")
         return(invisible(1))
     }
-    gData = exprs[sel, ]
+    gData = cbind(exprs[sel, ]) #exprs[sel, ]
     if (ncol(genes) > 1) 
         rownames(gData) = genes[match(rownames(gData), genes[, 
             1]), 2]
@@ -28,7 +28,7 @@ geneData <- function(genes, exprs, ref = NULL, samp = NULL,
             col.names = F, append = T)
     }
     
-    if (heatmap) {
+    if (heatmap & length(icol)>1 & !is.null(ref) & !is.null(samp)) {
         if (scale == "row") {
             gData.h = rownorm(gData[, icol])
         }

@@ -52,22 +52,23 @@ library(gage)
 data(gse16873)
 hn=(1:6)*2-1
 dcis=(1:6)*2
-
-#KEGG pathway analysis
+@
+ 
+KEGG pathway analysis. Here you need to make sure species and gene ID type are the same in gene sets (kegg.gs) and expression data
+(gse16873). You can check by: \R{head(kegg.gs[[1]]); head(rownames(gse16873))}
+<<synopsis2, echo=TRUE,  eval=FALSE>>=
 data(kegg.gs)
-gse16873.kegg.p <- gage(gse16873, gsets = kegg.gs,
-                        ref = hn, samp = dcis)
+gse16873.kegg.p <- gage(gse16873, gsets = kegg.gs, ref = hn, samp = dcis)
+@ 
 
-#GO analysis, separate BP, MF and CC categories
+GO analysis, separate BP, MF and CC categories
+<<synopsis3, echo=TRUE,  eval=FALSE>>=
 library(gageData)
 data(go.sets.hs)
 data(go.subs.hs)
-gse16873.bp.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$BP],
-                      ref = hn, samp = dcis)
-gse16873.mf.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$MF],
-                      ref = hn, samp = dcis)
-gse16873.cc.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$CC],
-                      ref = hn, samp = dcis)
+gse16873.bp.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$BP], ref = hn, samp = dcis)
+gse16873.mf.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$MF], ref = hn, samp = dcis)
+gse16873.cc.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$CC], ref = hn, samp = dcis)
 @ 
 
 \section{New features}

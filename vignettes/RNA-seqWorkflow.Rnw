@@ -483,11 +483,13 @@ The following GAGE and Pathview steps remain the same as in  \hyperref[code:merg
 
 \subsection{Cufflinks}
 \label{subsec:Cufflinks}
-\Metas{Cufflinks} is a most popular RNA-Seq analysis tool. It is developed by the same group as TopHat. It is implemented independent of Bioconductor. However, we can read its gene differential expression analysis results into R easily. The result file is named \verb@gene_exp_diff@, and here is the description is provided on \href{http://cufflinks.cbcb.umd.edu/manual.html#gene_exp_diff}{Cufflinks webpage}. Notice that the gene sybmols need to converted to Entrez Gene IDs, which are used in KEGG pathways (many research species) and GO gene sets.
+\Metas{Cufflinks} is a most popular RNA-Seq analysis tool. It is developed by the same group as TopHat. It is implemented independent of Bioconductor. However, we can read its gene differential expression analysis results into R easily. The result file is named \verb@gene_exp_diff@, and here is the description is provided on \href{http://cole-trapnell-lab.github.io/cufflinks/cuffdiff/index.html#differential-expression-tests}{Cufflinks webpage}. Notice that the gene sybmols need to converted to Entrez Gene IDs, which are used in KEGG pathways (many research species) and GO gene sets.
 
 <<cufflinks, echo=TRUE, eval=FALSE>>=
 cuff.res=read.delim(file="gene_exp.diff", sep="\t")
-cuff.fc=cuff.res$log2.fold_change.
+#notice the column name special character changes. The column used to be
+#cuff.res$log2.fold_change. for older versions of Cufflinks.
+cuff.fc=cuff.res$log2.FPKMy.FPKMx. 
 gnames=cuff.res$gene
 sel=gnames!="-"
 gnames=as.character(gnames[sel])
