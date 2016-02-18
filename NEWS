@@ -1,3 +1,9 @@
+version	2.20.1
+-------------
+
+  o updated RNA-seq workflow vignette, especially step 1
+    summarizeOverlaps, and correct tophat web link.
+
 version	2.19.1
 -------------
 

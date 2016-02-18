@@ -57,10 +57,6 @@ This is the concise version, please check the full version workflow below for de
 <<synopsis0, echo=TRUE,  eval=FALSE>>=
 ##step 0: setup (also need to map the reads outside R)
 source("http://bioconductor.org/biocLite.R")
-#for BioC <2.14
-biocLite(c("pathview", "gage", "gageData", "Rsamtools",
-            "TxDb.Hsapiens.UCSC.hg19.knownGene"))
-#for BioC >=2.14
 biocLite(c("pathview", "gage", "gageData", "GenomicAlignments",
             "TxDb.Hsapiens.UCSC.hg19.knownGene"))
 @ 
@@ -69,16 +65,13 @@ biocLite(c("pathview", "gage", "gageData", "GenomicAlignments",
 ##step 1: read counts
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 exByGn <- exonsBy(TxDb.Hsapiens.UCSC.hg19.knownGene, "gene")
-#for BioC <2.14
-library(Rsamtools)
-#for BioC >=2.14
 library(GenomicAlignments)
 fls <- list.files("tophat_all/", pattern="bam$", full.names =T)
 bamfls <- BamFileList(fls)
-flag <- scanBamFlag(isNotPrimaryRead=FALSE, isProperPair=TRUE)
+flag <- scanBamFlag(isSecondaryAlignment=FALSE, isProperPair=TRUE)
 param <- ScanBamParam(flag=flag)
 gnCnt <- summarizeOverlaps(exByGn, bamfls, mode="Union",
-             ignore.strand=TRUE, single.end=FALSE, param=param)
+             ignore.strand=TRUE, singleEnd=FALSE, param=param)
 hnrnp.cnts=assay(gnCnt)
 @ 
 
@@ -135,7 +128,7 @@ This preparation step is not part of the RNA-Seq data pathway analysis workflow 
 
 The raw reads data in zipped FASTQ format were downloaded from  \href{http://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-1147/}{ArrayExpress website}. This is the example data used in the  at the RNA-Seq section of the \href{http://www.bioconductor.org/help/course-materials/2013/SeattleMay2013/}{R/Bioconductor NGS course}. They worked with reads mapped to chromosome 14 only, here we work with all reads/genes for a practical pathway analysis.
 
-We use TopHat2 to map the raw reads to the reference human genome (hg19). And then use SAMtools to index the mapped reads. \href{http://tophat.cbcb.umd.edu/tutorial.shtml}{Tophat webpage} describes how to install TopHat and SAMtools, prepare the reference genome and use these tools. As an example, below is the code I used to map, index and process the read data for the first sample (ERR127302). You can write a shell script to do so for all samples (ERR127302-9). This step takes a couple of hours on a 8-core processor for each sample. You may run parallel jobs for multiple samples if you have access to HPC.
+We use TopHat2 to map the raw reads to the reference human genome (hg19). And then use SAMtools to index the mapped reads. \href{http://ccb.jhu.edu/software/tophat/tutorial.shtml}{Tophat webpage} describes how to install TopHat and SAMtools, prepare the reference genome and use these tools. As an example, below is the code I used to map, index and process the read data for the first sample (ERR127302). You can write a shell script to do so for all samples (ERR127302-9). This step takes a couple of hours on a 8-core processor for each sample. You may run parallel jobs for multiple samples if you have access to HPC.
 \begin{verbatim}
 tophat2 -p 8 -o tophat_out_1 ref/hg19 ERR127302_1.fastq.gz ERR127302_2.fastq.gz
 cd tophat_out_1
@@ -153,10 +146,6 @@ options(width=80)
 
 <<install, echo=TRUE, eval=FALSE>>=
 source("http://bioconductor.org/biocLite.R")
-#for BioC <2.14
-biocLite(c("pathview", "gage", "gageData", "Rsamtools",
-            "TxDb.Hsapiens.UCSC.hg19.knownGene"))
-#for BioC >=2.14
 biocLite(c("pathview", "gage", "gageData", "GenomicAlignments",
             "TxDb.Hsapiens.UCSC.hg19.knownGene"))
 @ 
@@ -167,21 +156,19 @@ And we are then ready for the pathway analysis workflow. The workflow has 4 dist
 
 \subsection{Step 1: Count the reads mapped to each gene}
 \label{subsec:step1}
-In this step, we need to extract exon regions by gene (i.e. Annotation of known gene models). It is important to make sure that the gene annotation uses the same version and source of reference genome in the reads mapping step above, in our case, hg19. We then count and summarize the reads mapped to each known gene/exon regions using package \Rpackage{Rsamtools} (and \Rpackage{GenomicRanges}). Here, we used the files \verb@"accepted_hits.bam"@ in tophat output directories, which have been renamed after the sample names and collected in to the  \verb@"tophat_all"@ directory above.
+In this step, we need to extract exon regions by gene (i.e. Annotation of known gene models). It is important to make sure that the gene annotation uses the same version and source of reference genome in the reads mapping step above, in our case, hg19. We then count and summarize the reads mapped to each known gene/exon regions using package \Rpackage{Rsamtools} (and \Rpackage{GenomicRanges}). Here, we used the files \verb@"accepted_hits.bam"@ in tophat output directories, which have been renamed after the sample names and collected in to the  \verb@"tophat_all"@ directory above. This step may take ten minutes or longer on a single-core cpu. You may use multiple cores if available.
 
 <<readcount, echo=TRUE, eval=FALSE>>=
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 exByGn <- exonsBy(TxDb.Hsapiens.UCSC.hg19.knownGene, "gene")
-#for BioC <2.14
-library(Rsamtools)
-#for BioC >=2.14
 library(GenomicAlignments)
 fls <- list.files("tophat_all/", pattern="bam$", full.names =T)
 bamfls <- BamFileList(fls)
-flag <- scanBamFlag(isNotPrimaryRead=FALSE, isProperPair=TRUE)
+flag <- scanBamFlag(isSecondaryAlignment=FALSE, isProperPair=TRUE)
 param <- ScanBamParam(flag=flag)
+#to run multiple core option: library(parallel); options("mc.cores"=4)
 gnCnt <- summarizeOverlaps(exByGn, bamfls, mode="Union",
-             ignore.strand=TRUE, single.end=FALSE, param=param)
+             ignore.strand=TRUE, singleEnd=FALSE, param=param)
 hnrnp.cnts=assay(gnCnt)
 @ 
 
