@@ -1,4 +1,4 @@
-go.gsets <-  function (species = "human", pkg.name = NULL, id.type="eg")
+go.gsets <-  function (species = "human", pkg.name = NULL, id.type="eg", keep.evidence=FALSE)
   {
     if (is.null(pkg.name)){
       species=tolower(species)
@@ -34,7 +34,7 @@ go.gsets <-  function (species = "human", pkg.name = NULL, id.type="eg")
     library(GO.db)
     go.names=sapply(AnnotationDbi::mget(names(go), GOTERM), function(x) x@Term)
     names(go)=paste(names(go), go.names)
-    go.sets=lapply(go, function(x) unique(x))
+    if(keep.evidence) go.sets=go else go.sets=lapply(go, function(x) unique(x))
     go.sets.len=sapply(go.sets, length)
 
     idx=grep("cellular_component|biological_process|molecular_function",names(go.sets.len))

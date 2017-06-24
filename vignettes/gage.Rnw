@@ -37,7 +37,7 @@
 \maketitle
 
 \begin{abstract}
-  In this vignette, we demonstrate the \Rpackage{gage} package for gene set (enrichment or GSEA) or pathway analysis. The \Rpackage{gage} package implement the GAGE method. GAGE is generally applicable independent of microarray and RNA-Seq data attributes including sample sizes, experimental designs, assay platforms, and other types of heterogeneity, and consistently achieves superior performance over other frequently used methods. We introduce functions and data for routine and advanced gene set (enrichment) analysis, as well as results presentation and interpretation. We also cover package installation, data preparation and common application errors. Two secondary vignettes, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"} and \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrate more applications and usages of GAGE.
+  In this vignette, we demonstrate the \Rpackage{gage} package for gene set (enrichment or GSEA) or pathway analysis. The \Rpackage{gage} package implement the GAGE method. GAGE is generally applicable independent of microarray and RNA-Seq data attributes including sample sizes, experimental designs, assay platforms, and other types of heterogeneity, and consistently achieves superior performance over other frequently used methods. We introduce functions and data for routine and advanced gene set (enrichment) analysis, as well as results presentation and interpretation. We also cover package installation, data preparation and common application errors. Two secondary vignettes, \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"} and \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrate more applications and usages of GAGE.
 \end{abstract}
 
 \section{Cite our work}
@@ -46,7 +46,8 @@ Weijun Luo, Michael Friedman, Kerby Shedden, Kurt Hankenson, and Peter Woolf. GA
 
 \section{Quick start with demo data}
 \label{sec:quick}
-This is the most basic use of \Rpackage{gage}, please check the full description below for more information. 
+This is the most basic use of \Rpackage{gage}, please check the full description below for more information. If you have difficulties in using R in general, you may use the \href{https://pathview.uncc.edu/}{Pathview Web server: pathview.uncc.edu}. \href{https://pathview.uncc.edu/}{The server} implemented GAGE based pathway analysis and Pathview based data visualization in \href{https://pathview.uncc.edu/example4}{a comprehensive pathway analysis workflow}. Please check \href{https://pathview.uncc.edu/overview}{the overview page} and \href{https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkx372}{the NAR web server paper} \citep{luo:etal:2017} for details. 
+
 <<synopsis1, echo=TRUE,  eval=FALSE>>=
 library(gage)
 data(gse16873)
@@ -73,7 +74,7 @@ gse16873.cc.p <- gage(gse16873, gsets = go.sets.hs[go.subs.hs$CC], ref = hn, sam
 
 \section{New features}
 \label{sec:news}
-\Rpackage{gage} ($\ge2.11.3$): A new secondary vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrates applications of GAGE/Pathview workflows in RNA-Seq data analysis.
+\Rpackage{gage} ($\ge2.11.3$): A new secondary vignette, \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrates applications of GAGE/Pathview workflows in RNA-Seq data analysis.
 \\
 \\
 \Rpackage{gage} ($\ge2.11.3$): A new function, \Rfunction{kegg.gsets}, has been introduced in the package. You may use it to compile pathway gene set data any time needed for one of the 3000 KEGG species and  KEGG Orthology (with species="ko"). In addition, you get the most updated pathway gene set data as it is retrieved from KEGG in real time. Please check the \hyperref[code:kegg.gsets]{Section Basic Analysis} and the help info on the function for details.
@@ -137,9 +138,9 @@ help(gage)
 @ 
 
 \section{Basic Analysis}
-GAGE \citep{luo:etal:2009} is a widely applicable method for gene set or pathway analysis. In such analysis, we check for coordinated differential expression over gene sets instead of changes of individual genes. Gene sets are pre-defined groups of genes, which are functionally related. Commonly used gene sets include those derived from KEGG pathways, Gene Ontology terms, gene groups that share some other functional annotations, including common transcriptional regulators (like transcription factors, small interfering RNA's or siRNA etc), genomic locations etc. Consistent perturbations over such gene sets frequently suggest mechanistic changes. GSA is much more robust and sensitive than individual gene analysis \citep{luo:etal:2009}, especially considering the functional redundancy of individual genes and the noise level of high throughput assay data. GAGE method implemented in this package makes GSA feasible to all microarray and RNA-Seq studies, irrespecitve of the sample size, experiment design, array platform etc. Let's start with the most basic gene set analysis. Note that both the demo expression data and gene set data are ready here, if not, please check vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}, for data preparation.
+GAGE \citep{luo:etal:2009} is a widely applicable method for gene set or pathway analysis. In such analysis, we check for coordinated differential expression over gene sets instead of changes of individual genes. Gene sets are pre-defined groups of genes, which are functionally related. Commonly used gene sets include those derived from KEGG pathways, Gene Ontology terms, gene groups that share some other functional annotations, including common transcriptional regulators (like transcription factors, small interfering RNA's or siRNA etc), genomic locations etc. Consistent perturbations over such gene sets frequently suggest mechanistic changes. GSA is much more robust and sensitive than individual gene analysis \citep{luo:etal:2009}, especially considering the functional redundancy of individual genes and the noise level of high throughput assay data. GAGE method implemented in this package makes GSA feasible to all microarray and RNA-Seq studies, irrespecitve of the sample size, experiment design, array platform etc. Let's start with the most basic gene set analysis. Note that both the demo expression data and gene set data are ready here, if not, please check vignette, \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}, for data preparation.
 
-We load and look at the demo microarray data first. Note that although we use microarray data as example, GAGE is equally applicable to RNA-Seq data and other types of gene/protein centered high throughput data. The other vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrates such applications of GAGE.
+We load and look at the demo microarray data first. Note that although we use microarray data as example, GAGE is equally applicable to RNA-Seq data and other types of gene/protein centered high throughput data. The other vignette, \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/RNA-seqWorkflow.pdf}{"RNA-Seq Data Pathway and Gene-set Analysis Workflows"}, demonstrates such applications of GAGE.
 <<dataPrep, echo=TRUE>>=
 data(gse16873)
 cn=colnames(gse16873)
@@ -153,7 +154,7 @@ print(dcis)
 Check to make sure your gene sets and your expression data are using
 the same ID system (Entrez Gene ID, Gene symbol, or probe set ID
 etc). Entrez Gene IDs are integer numbers, Gene symbols are characters, and
-probe set IDs (Affymetrix GeneChip) are characters with \verb@_at@ suffix. When gene sets and expression data do use different types of ID, please check vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}, for ID conversion solutions.
+probe set IDs (Affymetrix GeneChip) are characters with \verb@_at@ suffix. When gene sets and expression data do use different types of ID, please check vignette, \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}, for ID conversion solutions.
 
 <<dataPrep, echo=TRUE>>=
 data(kegg.gs)
@@ -425,6 +426,7 @@ pv.out.list <- sapply(path.ids2, function(pid) pathview(gene.data = gse16873.d[,
                         1:2], pathway.id = pid, species = "hsa"))
 @ 
 
+Note \href{https://pathview.uncc.edu/}{the Pathview Web server} provides a comprehensive workflow for both regular and integrated pathway analysis of multiple omics data \citep{luo:etal:2017}, as shown in \href{https://pathview.uncc.edu/example4}{Example 4 online}. 
 
 \section{Advanced Analysis}
 We frequently need to do GAGE analysis repetitively on mulitple comparisons (with different samples vs references) in a study, or even with different analysis options (paired or unpaired samples, use or not use rank test etc). We can carry these different analyses with different sub-datasets all at once using a composite funciton, \Rfunction{gagePipe}. Different from \Rfunction{gage}, \Rfunction{gagePipe} accepts lists of reference/sample column numbers, with matching lists/vectors of other arguements. Function \Rfunction{gagePipe} runs multiple rounds of GAGE in a batch without interference, and outputs signficant gene set lists in text format and save the results in \verb@.RData@ format.
@@ -487,7 +489,7 @@ We may compare the results from this combined analysis of the combined dataset v
 
 \section{Common Errors}
 \begin{itemize}
-\item Gene sets and expression data use different ID systems (Entrez Gene ID, Gene symbol or probe set ID etc). To correct, use functions like eg2sym or sym2eg, or check vignette, \href{http://bioconductor.org/packages/2.13/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}, for more solutions. If you used customized CDF file based on Entrez Gene to processed the raw data, do: \verb@rownames(gse16873)=gsub('_at', '', rownames(gse16873))@.
+\item Gene sets and expression data use different ID systems (Entrez Gene ID, Gene symbol or probe set ID etc). To correct, use functions like eg2sym or sym2eg, or check vignette, \href{http://bioconductor.org/packages/release/bioc/vignettes/gage/inst/doc/dataPrep.pdf}{"Gene set and data preparation"}, for more solutions. If you used customized CDF file based on Entrez Gene to processed the raw data, do: \verb@rownames(gse16873)=gsub('_at', '', rownames(gse16873))@.
 \item We use gene set data for a different species than the expression data, e.g. use \verb@kegg.mm@ instead of \verb@kegg.gs@ for human data. When running \verb@gage@ or \verb@gagePipe@ function, we get error message like, \verb@Error in if (is.na(spval[i])) tmp[i] <- NA : argument is of length zero@.
 \item Expression data have multiple probesets (as in Affymetrix GeneChip Data) for a single gene, but gene set analysis requires one entry per gene. You may pick up the most differentially expressed probeset for a gene and discard the rest, or process the raw intensity data using customized probe set definition (CDF file), where probes are re-mapped on a gene by gene base. Check the Methods section of GAGE paper \citep{luo:etal:2009} for details.
 \item Expression data have genes as columns and samples/chips as rows, i.e. in a transposed form. To correct, do: \verb@expdata=t(expdata)@.

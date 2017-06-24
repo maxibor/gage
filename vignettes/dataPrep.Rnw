@@ -35,7 +35,8 @@
 \maketitle
 
 \section{Introduction}
-In this short tutorial, we cover a few practical issues we frequently come cross in GAGE \citep{luo:etal:2009} and other types of gene set analysis. These issues include: gene set and expression data input, probe set ID, transcript and gene ID conversion. This tutorial is written for those who are less familiar with R/Bioconductor basics. 
+In this short tutorial, we cover a few practical issues we frequently come cross in GAGE \citep{luo:etal:2009} and other types of gene set analysis. These issues include: gene set and expression data input, probe set ID, transcript and gene ID conversion. This tutorial is written for those who are less familiar with R/Bioconductor basics. If you still have difficulties and you don't need to work on pathways or gene sets other than KEGG, you may use the \href{https://pathview.uncc.edu/}{Pathview Web server: pathview.uncc.edu}. \href{https://pathview.uncc.edu/}{The server} implemented GAGE based pathway analysis and Pathview based data visualization in \href{https://pathview.uncc.edu/example4}{a comprehensive pathway analysis workflow}. Please check \href{https://pathview.uncc.edu/overview}{the overview page} and \href{https://academic.oup.com/nar/article-lookup/doi/10.1093/nar/gkx372}{the NAR web server paper} \citep{luo:etal:2017} for details.
+
 
 First we get started as decribed in the main vignette. Under R, first we load the \Rpackage{gage} package:
 <<start, echo=FALSE>>=

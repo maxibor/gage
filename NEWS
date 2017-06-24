@@ -1,3 +1,16 @@
+VERSION 2.27.1/2.26.1
+-------------
+  
+  o major expansion in korg, which now include both KEGG and NCBI
+    taxonomy IDs, two more gene ID types, i.e. NCBI protein and uniprot
+    IDs. In addition, Entrez or NCBI Gene IDs are discontinued for most
+    prokaryotes.
+
+  o korg now include 4800 KEGG species, in the meantime, an updated
+    version of korg is now checked out from Pathview Web server each
+    R session when kegg.gsets function is called the first time.
+
+
 version	2.20.1
 -------------
 

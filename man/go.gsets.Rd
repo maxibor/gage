@@ -8,7 +8,7 @@
   either Bioconductor or user supplied gene annotation package.
 }
 \usage{
-go.gsets(species = "human", pkg.name=NULL, id.type = "eg")
+go.gsets(species = "human", pkg.name=NULL, id.type = "eg", keep.evidence=FALSE)
 }
 \arguments{
   \item{species}{
@@ -31,6 +31,13 @@ go.gsets(species = "human", pkg.name=NULL, id.type = "eg")
     for many common model organisms, like human, mouse, rat etc. For
     other species may use "orf" (open reading frame) and other specific
     gene IDs, please type in: {data(bods); bods} to check the details. 
+  }
+  \item{keep.evidence}{
+    boolean, whether to keep the GO evidence codes for genes assigned to
+    each GO term. The evidence codes describe what type of evidence was
+    present in that reference to make the annotation. Default
+    keep.evidence = FALSE, which removes all the evidence codes and
+    redundant gene entries due to multiple evidence codes in a gene set.
   }
 }
 \details{
